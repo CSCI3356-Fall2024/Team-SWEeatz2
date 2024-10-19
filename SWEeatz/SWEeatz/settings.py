@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
+
+    #Google sign-in apps:
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -143,7 +145,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATON_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
-    "allauth.accounts.auth_backends.AuthenticatonBackend"
+    "allauth.account.auth_backends.AuthenticatonBackend"
 )
 
 LOGIN_REDIRECT_URL = "/"
