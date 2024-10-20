@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-SITE_ID = 1
+SITE_ID = 2
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
+    'crispy_forms',
+    'crispy_bootstrap5',
 
     #Google sign-in apps:
     'django.contrib.sites',
@@ -150,4 +152,6 @@ AUTHENTICATON_BACKENDS = (
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
+
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
