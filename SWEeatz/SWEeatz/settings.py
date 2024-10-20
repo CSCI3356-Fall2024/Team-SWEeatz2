@@ -57,7 +57,9 @@ SOCIALACCOUNT_PROVIDERS = {
             "profile",
             "email",
         ],
-        "AUTH_PARAMS": {"access_type": "online",}
+        "AUTH_PARAMS": {
+            'prompt': 'select_account',
+            "access_type": "online",}
     }
 }
 
@@ -139,6 +141,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+LOGIN_REDIRECT_URL = '/create/'  # Send users to /create/ after logging in
+ACCOUNT_SIGNUP_REDIRECT_URL = '/create/'  # Send users to /create/ after signup
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
