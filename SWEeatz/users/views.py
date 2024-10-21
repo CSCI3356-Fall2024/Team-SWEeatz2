@@ -17,7 +17,7 @@ def student_create_view(request):
     student, created = Student.objects.get_or_create(user=user)  # Create or fetch the student's profile
 
     if request.method == 'POST':
-        form = StudentForm(request.POST, instance=student)  # Use the existing student instance
+        form = StudentForm(request.POST, request.FILES, instance=student)  # Use the existing student instance
         if form.is_valid():
             form.save()  # Save updates
             return redirect('profile')  # Redirect to the profile page (adjust this as necessary)

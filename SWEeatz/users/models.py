@@ -91,11 +91,12 @@ MINOR_CHOICES = [
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    student_id = models.IntegerField(blank = True)
+    student_id = models.IntegerField(blank = True, null = True)
     school = models.CharField(max_length = 100)
     graduation_year = models.CharField(max_length=4, choices=GRADUATION_YEAR_CHOICES, default='2025')
     major = models.CharField(max_length=100, choices=MAJOR_CHOICES, default='Computer Science')
     minor = models.CharField(max_length=100, choices=MINOR_CHOICES, default='N/A')
-    
+    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+
     def __str__(self):
         return self.user.get_full_name()

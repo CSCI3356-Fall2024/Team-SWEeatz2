@@ -13,6 +13,7 @@ class StudentForm(forms.ModelForm):
             'school': 'School',
             'graduation_year': 'Graduation Year',
             'major': 'Primary Major',
+            'profile_picture': 'Profile Picture',
         }
 
         widgets = {
@@ -27,6 +28,8 @@ class StudentForm(forms.ModelForm):
             'major': forms.Select(
                 attrs={'class': 'form-control'}),
             'minor': forms.Select(
+                attrs={'class': 'form-control'}),
+            'profile_picture': forms.FileInput(
                 attrs={'class': 'form-control'}),
 
         }
