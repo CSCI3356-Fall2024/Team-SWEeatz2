@@ -22,7 +22,7 @@ class StudentForm(forms.ModelForm):
                 attrs= {'placeholder': 'e.g 1234567', 'class':'form-control'}),
             'name': forms.TextInput(
                 attrs={'placeholder': 'e.g. Baldwin', 'class': 'form-control'}),
-            'school': forms.TextInput(
+            'school': forms.Select(
                 attrs={'placeholder': 'e.g Boston College', 'class': 'form-control'}),
             'graduation_year': forms.Select(
                 attrs={'class': 'form-control'}),

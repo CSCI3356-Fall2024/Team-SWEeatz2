@@ -55,15 +55,19 @@ MAJOR_CHOICES = [
     ('Theatre', 'Theatre'),
     ('Theology', 'Theology')
 ]
-
-
-
+SCHOOL_CHOICES = [
+    ('MCAS', 'MCAS'),
+    ('CSOM', 'CSOM'),
+    ('CSON', 'CSON'),
+    ('LSEHD', 'LSEHD'),
+    ('MESSINA', 'MESSINA'),
+]
 
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     student_id = models.IntegerField(blank = True, null = True)
-    school = models.CharField(max_length = 100)
+    school = models.CharField(max_length=100, choices=SCHOOL_CHOICES, default='MCAS')
     graduation_year = models.CharField(max_length=4, choices=GRADUATION_YEAR_CHOICES, default='2025')
     major = models.CharField(max_length=100, choices=MAJOR_CHOICES, default='Computer Science')
     major2 = models.CharField(max_length=100, choices=MAJOR_CHOICES, default='N/A')
