@@ -5,6 +5,7 @@ class StudentForm(forms.ModelForm):
 
     class Meta:
         model = Student
+        exclude = ['user']
         fields = '__all__'
         labels = {
             'student_id':'Student ID',

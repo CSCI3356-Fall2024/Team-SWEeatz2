@@ -142,22 +142,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-# Disable asking for a username
-ACCOUNT_USERNAME_REQUIRED = False
 
-# Disable email verification for OAuth logins (optional, but streamlines flow)
-ACCOUNT_EMAIL_VERIFICATION = "none"
-
-# Automatically redirect after login or signup
-LOGIN_REDIRECT_URL = '/create/'
-ACCOUNT_SIGNUP_REDIRECT_URL = '/create/'
-
-# Automatically log in new users instead of showing a signup form
-SOCIALACCOUNT_AUTO_SIGNUP = True
-
-# Ensure email is required and used as the identifier
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -165,7 +150,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATON_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticatonBackend"
+    "allauth.account.auth_backends.AuthenticationBackend"
 )
 
 LOGIN_REDIRECT_URL = "/"

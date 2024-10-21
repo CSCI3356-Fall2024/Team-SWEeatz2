@@ -91,7 +91,7 @@ MINOR_CHOICES = [
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    student_id = models.IntegerField()
+    student_id = models.IntegerField(blank = True)
     school = models.CharField(max_length = 100)
     graduation_year = models.CharField(max_length=4, choices=GRADUATION_YEAR_CHOICES, default='2025')
     major = models.CharField(max_length=100, choices=MAJOR_CHOICES, default='Computer Science')

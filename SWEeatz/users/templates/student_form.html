@@ -5,6 +5,7 @@
 {% block content %}
 <div class="jumbotron text-center">
     <h1 class="text-center"> Student Profile </h1>
+    <p><strong>Logged in as:</strong> {{ full_name }}</p>
     <form method="POST" class="jumbotron">
         {% csrf_token %}
         {{form}}
