@@ -1,0 +1,66 @@
+/* Lighter shade of gold */
+body {
+    background-color: #faf3c0; /* Light gold */
+    color: #611800; /* Maroon */
+    font-family: 'Arial', sans-serif;
+}
+
+.navbar {
+    background-color: #611800; /* Maroon */
+}
+
+.navbar-brand {
+    color: #FFD700 !important; /* Gold */
+    font-weight: bold;
+    font-size: 1.8em; /* Bigger font for Eagle Earth */
+    text-decoration: none !important; /* Remove underline */
+}
+
+.nav-link {
+    color: #FFD700 !important; /* Gold */
+}
+
+.jumbotron {
+    background-color: #FFD966; /* Lighter gold */
+    color: #611800; /* Maroon */
+    border-radius: 15px;
+}
+
+h2 {
+    font-family: 'Georgia', serif;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+p {
+    text-align: center; /* Center the guide text */
+}
+
+.btn-google {
+    background-color: #611800; /* Maroon */
+    color: white;
+    font-weight: bold;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    text-decoration: none; /* Remove underline from the button */
+    display: inline-block;
+}
+
+.btn-google:hover {
+    background-color: #FFD700; /* Gold on hover */
+    color: #611800; /* Maroon */
+    text-decoration: none; /* No underline on hover */
+}
+
+footer {
+    background-color: #611800; /* Maroon */
+    color: #FFD700;
+    text-align: center;
+    padding: 20px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
