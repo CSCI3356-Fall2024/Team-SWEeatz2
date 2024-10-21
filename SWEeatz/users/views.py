@@ -26,13 +26,6 @@ def student_create_view(request):
         form = StudentForm(instance=student)
 
     return render(request, 'student_form.html', {'form': form, 'full_name': user.get_full_name()})
-    form = StudentForm()
-    if request.method == 'POST':
-        form = StudentForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('profile')
-    return render(request, 'student_form.html', {'form':form})
 
 def post_login_redirect(request):
     user = request.user
@@ -54,4 +47,3 @@ def student_list_view(request):
     else:
         role = "Student"
     return render(request, 'student_list.html', {'student': student, 'full_name': user.get_full_name(), 'role':role})
-    return render(request, 'student_list.html', {'students': students})
