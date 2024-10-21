@@ -11,6 +11,7 @@ GRADUATION_YEAR_CHOICES = [
 ]
 
 MAJOR_CHOICES = [
+    ('N/A','N/A'),
     ('African and African Diaspora Studies', 'African and African Diaspora Studies'),
     ('Applied Physics', 'Applied Physics'),
     ('Art History', 'Art History'),
@@ -55,37 +56,7 @@ MAJOR_CHOICES = [
     ('Theology', 'Theology')
 ]
 
-MINOR_CHOICES = [
-    ('N/A', 'N/A'),
-    ('Ancient Greek', 'Ancient Greek'),
-    ('Arabic Studies', 'Arabic Studies'),
-    ('Art History', 'Art History'),
-    ('Biology', 'Biology'),
-    ('Chemistry', 'Chemistry'),
-    ('Chinese', 'Chinese'),
-    ('Computer Science', 'Computer Science'),
-    ('Economics', 'Economics'),
-    ('English', 'English'),
-    ('Film Studies', 'Film Studies'),
-    ('French', 'French'),
-    ('Geological Sciences', 'Geological Sciences'),
-    ('German', 'German'),
-    ('Global Public Health and Common Good', 'Global Public Health and Common Good'),
-    ('Hispanic Studies', 'Hispanic Studies'),
-    ('History', 'History'),
-    ('Italian', 'Italian'),
-    ('Latin', 'Latin'),
-    ('Linguistics', 'Linguistics'),
-    ('Mathematics', 'Mathematics'),
-    ('Music', 'Music'),
-    ('Philosophy', 'Philosophy'),
-    ('Physics', 'Physics'),
-    ('Russian', 'Russian'),
-    ('Sociology', 'Sociology'),
-    ('Studio Art', 'Studio Art'),
-    ('Theatre', 'Theatre'),
-    ('Theology', 'Theology')
-]
+
 
 
 
@@ -95,7 +66,7 @@ class Student(models.Model):
     school = models.CharField(max_length = 100)
     graduation_year = models.CharField(max_length=4, choices=GRADUATION_YEAR_CHOICES, default='2025')
     major = models.CharField(max_length=100, choices=MAJOR_CHOICES, default='Computer Science')
-    minor = models.CharField(max_length=100, choices=MINOR_CHOICES, default='N/A')
+    major2 = models.CharField(max_length=100, choices=MAJOR_CHOICES, default='N/A')
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
 
     def __str__(self):

@@ -13,6 +13,7 @@ class StudentForm(forms.ModelForm):
             'school': 'School',
             'graduation_year': 'Graduation Year',
             'major': 'Primary Major',
+            'major2': 'Second Major (If Applicable)',
             'profile_picture': 'Profile Picture',
         }
 
@@ -27,7 +28,7 @@ class StudentForm(forms.ModelForm):
                 attrs={'class': 'form-control'}),
             'major': forms.Select(
                 attrs={'class': 'form-control'}),
-            'minor': forms.Select(
+            'major2': forms.Select(
                 attrs={'class': 'form-control'}),
             'profile_picture': forms.FileInput(
                 attrs={'class': 'form-control'}),

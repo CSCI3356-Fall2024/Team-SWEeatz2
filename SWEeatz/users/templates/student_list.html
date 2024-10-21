@@ -4,6 +4,7 @@
 
 {% block content %}
 <h1 class="text-center"> Your Profile </h1>
+<p class="text-center"><strong>You are a:</strong> {{ role }}</p>
 <table class="table table-bordered table-striped">
     <thead class="thead-dark">
         <tr>
@@ -13,7 +14,7 @@
             <th>School</th>
             <th>Graduation Year</th>
             <th>Primary Major</th>
-            <th>Primary Minor</th>
+            <th>Second Major</th>
         </tr>
     </thead>
     <tbody>
@@ -24,7 +25,7 @@
             <td>{{ student.school }}</td>
             <td>{{ student.graduation_year }}</td>
             <td>{{ student.major }}</td>
-            <td>{{ student.minor }}</td>
+            <td>{{ student.major2 }}</td>
         </tr>
     </tbody>
 </table>

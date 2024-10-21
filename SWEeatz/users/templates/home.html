@@ -1,10 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DJango Google Sign-In</title>
+{% extends "layout.html" %}
+
+{% block title %} Welcome to Eagle Earth! {% endblock %}
+
+{% block content %}
+    <div class="jumbotron text-center" style="background-color: #FAE5AC; padding: 2rem 0; margin: 0;">
+        <div class="container" style="max-width: 100%; text-align: center;">
+            <h1 class="display-4">Your Guide to Sustainable Dining at Boston College</h1>
+            <p class="lead">Explore sustainability efforts and make eco-conscious dining choices.</p>
+            {% load socialaccount %}
+            {% if user.is_authenticated %}
+                <p>You are signed in as {{ user.email }}.</p>
+                <a href="{% url 'student_create' %}" class="btn btn-primary">Edit Profile</a>
+                <a href="{% url 'account_logout' %}" class="btn btn-danger">Logout</a>
+            {% else %}
+                <a class="btn btn-lg" style="background-color: #611800; color: white;" href="{% provider_login_url 'google' %}?next={% url 'post_login_redirect' %}">Login</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
 </head>
 <body>
     {% load socialaccount %}

@@ -34,9 +34,24 @@ def student_create_view(request):
             return redirect('profile')
     return render(request, 'student_form.html', {'form':form})
 
+def post_login_redirect(request):
+    user = request.user
+
+    # Check if the user already has a Student profile
+    try:
+        student = Student.objects.get(user=user)
+        # If the user has a profile, redirect them to the list page
+        return redirect('profile')  # or whatever URL name you have for the list page
+    except Student.DoesNotExist:
+        # If no profile exists, redirect them to the profile creation page
+        return redirect('student_create')
 
 def student_list_view(request):
     user = request.user
     student = get_object_or_404(Student, user=user)  # Fetch only the logged-in user's profile
-    return render(request, 'student_list.html', {'student': student, 'full_name': user.get_full_name()})
+    if user.is_superuser:
+        role = "Admin"
+    else:
+        role = "Student"
+    return render(request, 'student_list.html', {'student': student, 'full_name': user.get_full_name(), 'role':role})
     return render(request, 'student_list.html', {'students': students})
