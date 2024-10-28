@@ -47,3 +47,6 @@ def student_list_view(request):
     else:
         role = "Student"
     return render(request, 'student_list.html', {'student': student, 'full_name': user.get_full_name(), 'role':role})
+
+def create_campaign(request):
+    return render(request, 'campaign_create.html')
