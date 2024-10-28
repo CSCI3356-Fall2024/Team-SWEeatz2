@@ -75,3 +75,19 @@ class Student(models.Model):
 
     def __str__(self):
         return self.user.get_full_name()
+    
+
+class Campaign(models.Model):
+    title = models.CharField(max_length=200, help_text="Enter the title of the campaign")
+    description = models.TextField(help_text="Enter a brief description of the campaign")
+    start_date = models.DateField(help_text="Campaign start date")
+    end_date = models.DateField(help_text="Campaign end date")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['-start_date']  # Order by start date descending by default
+

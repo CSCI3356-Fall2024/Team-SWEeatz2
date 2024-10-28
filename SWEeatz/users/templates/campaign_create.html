@@ -1,54 +1,53 @@
 {% extends "layout.html" %}
+{% load static %}
 
-{% block title %}Create New Campaign{% endblock %}
+{% block title %} Create Campaign {% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <br>
-    <h1 class="text-center">Create a New Campaign</h1>
-    <p class="lead text-center">Fill out the details below to create a new sustainability campaign.</p>
+<br><br><br>
+<div class="row">
+    <!-- Left Column: Existing Campaigns -->
+    <div class="col-md-4">
+        <h3>Existing Campaigns</h3>
+        <ul class="list-group">
+            {% for campaign in campaigns %}
+                <li class="list-group-item">
+                    <h5>{{ campaign.title }}</h5>
+                    <p>{{ campaign.description|truncatewords:20 }}</p>
+                    <small>Start Date: {{ campaign.start_date }}</small><br>
+                    <small>End Date: {{ campaign.end_date }}</small>
+                </li>
+            {% empty %}
+                <li class="list-group-item">No existing campaigns.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
 
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                
-                <!-- Campaign Name -->
-                <div class="form-group">
-                    <label for="campaign_name">Campaign Name</label>
-                    <input type="text" id="campaign_name" name="campaign_name" class="form-control" placeholder="Enter campaign name" required>
-                </div>
-                
-                <!-- Campaign Description -->
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea id="description" name="description" class="form-control" rows="4" placeholder="Enter campaign description" required></textarea>
-                </div>
-                
-                <!-- Campaign Start Date -->
-                <div class="form-group">
-                    <label for="start_date">Start Date</label>
-                    <input type="date" id="start_date" name="start_date" class="form-control" required>
-                </div>
-                
-                <!-- Campaign End Date -->
-                <div class="form-group">
-                    <label for="end_date">End Date</label>
-                    <input type="date" id="end_date" name="end_date" class="form-control" required>
-                </div>
-                
-                <!-- Campaign Image -->
-                <div class="form-group">
-                    <label for="image">Campaign Image</label>
-                    <input type="file" id="image" name="image" class="form-control-file">
-                </div>
-                
-                <!-- Submit Button -->
-                <div class="form-group text-center mt-4">
-                    <button type="submit" class="btn btn-primary btn-lg">Create Campaign</button>
-                </div>
-            </form>
-        </div>
+    <!-- Right Column: Campaign Creation Form -->
+    <div class="col-md-8">
+        <h3>Create a New Campaign</h3>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title">Campaign Title</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="start_date">Start Date</label>
+                <input type="date" class="form-control" id="start_date" name="start_date" required>
+            </div>
+            <div class="form-group">
+                <label for="end_date">End Date</label>
+                <input type="date" class="form-control" id="end_date" name="end_date" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Create Campaign</button>
+        </form>
     </div>
 </div>
 {% endblock %}
+

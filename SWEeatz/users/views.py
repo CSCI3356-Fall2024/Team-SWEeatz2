@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from .forms import StudentForm
-from .models import Student
+from .models import Student, Campaign
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 # Create your views here.
 
 def home(request):
@@ -49,4 +50,24 @@ def student_list_view(request):
     return render(request, 'student_list.html', {'student': student, 'full_name': user.get_full_name(), 'role':role})
 
 def create_campaign(request):
-    return render(request, 'campaign_create.html')
+    if request.method == 'POST':
+        # Get data from the form
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+
+        # Validate and save the data
+        if title and description and start_date and end_date:
+            # Create a new Campaign instance
+            Campaign.objects.create(
+                title=title,
+                description=description,
+                start_date=start_date,
+                end_date=end_date
+            )
+            return redirect('create_campaign')  # Redirect to the same page after saving
+
+    # If GET request, display the form and existing campaigns
+    campaigns = Campaign.objects.all()  # Retrieve all existing campaigns
+    return render(request, 'campaign_create.html', {'campaigns': campaigns})
