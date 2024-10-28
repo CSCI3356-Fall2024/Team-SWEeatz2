@@ -63,44 +63,54 @@
 </div>
 
 <script>
-    document.getElementById('load-more').addEventListener('click', function() {
-        const offset = this.getAttribute('data-offset');
-        fetch(`/create-campaign/load_more/?offset=${offset}`)
-            .then(response => response.json())
-            .then(data => {
-                const campaignList = document.getElementById('campaign-list');
-                data.campaigns.forEach(campaign => {
-                    const item = document.createElement('li');
-                    item.className = 'list-group-item additional-campaign';  // Mark additional items with a class
-                    item.innerHTML = `
-                        ${campaign.image_url ? `<img src="${campaign.image_url}" alt="${campaign.title}" style="width: 100%; height: auto;">` : ''}
-                        <h5>${campaign.title}</h5>
-                        <p>${campaign.description.substring(0, 100)}...</p>
-                        <small>Start Date: ${campaign.start_date}</small><br>
-                        <small>End Date: ${campaign.end_date}</small>
-                    `;
-                    campaignList.appendChild(item);
+    document.addEventListener('DOMContentLoaded', function() {
+        const totalCampaigns = {{ total_campaigns }};  // Get total campaign count from the view
+    
+        document.getElementById('load-more').addEventListener('click', function() {
+            const offset = parseInt(this.getAttribute('data-offset'));
+            
+            fetch(`/create-campaign/load_more/?offset=${offset}`)
+                .then(response => response.json())
+                .then(data => {
+                    const campaignList = document.getElementById('campaign-list');
+                    data.campaigns.forEach(campaign => {
+                        const item = document.createElement('li');
+                        item.className = 'list-group-item additional-campaign';
+                        item.innerHTML = `
+                            ${campaign.image_url ? `<img src="${campaign.image_url}" alt="${campaign.title}" style="width: 100%; height: auto;">` : ''}
+                            <h5>${campaign.title}</h5>
+                            <p>${campaign.description.substring(0, 100)}...</p>
+                            <small>Start Date: ${campaign.start_date}</small><br>
+                            <small>End Date: ${campaign.end_date}</small>
+                        `;
+                        campaignList.appendChild(item);
+                    });
+    
+                    // Update offset for the next load
+                    const newOffset = offset + data.campaigns.length;
+                    this.setAttribute('data-offset', newOffset);
+    
+                    // Check if we've loaded all campaigns
+                    if (newOffset >= totalCampaigns) {
+                        this.style.display = 'none';  // Hide Load More button
+                    }
+    
+                    // Show "Show Less" button after loading more items
+                    document.getElementById('show-less').style.display = 'inline-block';
                 });
-                // Update offset for the next load
-                this.setAttribute('data-offset', parseInt(offset) + 2);
-                
-                // Toggle buttons
-                document.getElementById('load-more').style.display = 'none';
-                document.getElementById('show-less').style.display = 'inline-block';
-            });
-    });
+        });
     
-    document.getElementById('show-less').addEventListener('click', function() {
-        // Remove additional campaigns
-        const additionalCampaigns = document.querySelectorAll('.additional-campaign');
-        additionalCampaigns.forEach(item => item.remove());
-        
-        // Reset the offset and toggle buttons
-        document.getElementById('load-more').setAttribute('data-offset', 2);
-        document.getElementById('load-more').style.display = 'inline-block';
-        this.style.display = 'none';
-    });
+        document.getElementById('show-less').addEventListener('click', function() {
+            // Remove additional campaigns
+            const additionalCampaigns = document.querySelectorAll('.additional-campaign');
+            additionalCampaigns.forEach(item => item.remove());
     
-    </script>
+            // Reset the offset and toggle buttons
+            document.getElementById('load-more').setAttribute('data-offset', 2);
+            document.getElementById('load-more').style.display = 'inline-block'; // Show Load More again
+            this.style.display = 'none';  // Hide Show Less button
+        });
+    });
+    </script>    
 {% endblock %}
 

@@ -55,15 +55,16 @@ def is_admin(user):
     return user.is_superuser
 
 @user_passes_test(is_admin, login_url='home')  # Redirects non-admins to home
+
 def create_campaign(request):
     if request.method == 'POST':
-        # Handle the campaign creation form submission
+        # Handle the form submission
         title = request.POST.get('title')
         description = request.POST.get('description')
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
         image = request.FILES.get('image')
-        
+
         if title and description and start_date and end_date:
             Campaign.objects.create(
                 title=title,
@@ -74,17 +75,14 @@ def create_campaign(request):
             )
             return redirect('create_campaign')
 
-    # Show only the first 2 campaigns initially
+    # Get the first 2 campaigns and the total count
     campaigns = Campaign.objects.all()[:2]
-    return render(request, 'campaign_create.html', {'campaigns': campaigns})
+    total_campaigns = Campaign.objects.count()
+    return render(request, 'campaign_create.html', {'campaigns': campaigns, 'total_campaigns': total_campaigns})
 
 def load_more_campaigns(request):
-    """Handles loading additional campaigns via AJAX."""
     offset = int(request.GET.get('offset', 2))
-    limit = 2  # Number of additional campaigns to load each time
-    campaigns = Campaign.objects.all()[offset:offset + limit]
-    
-    # Prepare data for JSON response
+    campaigns = Campaign.objects.all()[offset:]
     campaign_data = [
         {
             "title": campaign.title,
@@ -96,4 +94,5 @@ def load_more_campaigns(request):
         for campaign in campaigns
     ]
     return JsonResponse({"campaigns": campaign_data})
+
 
