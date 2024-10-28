@@ -23,9 +23,11 @@
                 </li>
             {% endfor %}
         </ul>
-        <!-- Load More Button -->
+        <!-- Load More and Show Less Buttons -->
         <button id="load-more" class="btn btn-secondary mt-3" data-offset="2">Load More</button>
+        <button id="show-less" class="btn btn-secondary mt-3" style="display: none;">Show Less</button>
     </div>
+    
     
     
 
@@ -68,7 +70,7 @@
                 const campaignList = document.getElementById('campaign-list');
                 data.campaigns.forEach(campaign => {
                     const item = document.createElement('li');
-                    item.className = 'list-group-item';
+                    item.className = 'list-group-item additional-campaign';  // Mark additional items with a class
                     item.innerHTML = `
                         ${campaign.image_url ? `<img src="${campaign.image_url}" alt="${campaign.title}" style="width: 100%; height: auto;">` : ''}
                         <h5>${campaign.title}</h5>
@@ -80,8 +82,24 @@
                 });
                 // Update offset for the next load
                 this.setAttribute('data-offset', parseInt(offset) + 2);
+                
+                // Toggle buttons
+                document.getElementById('load-more').style.display = 'none';
+                document.getElementById('show-less').style.display = 'inline-block';
             });
-    });    
+    });
+    
+    document.getElementById('show-less').addEventListener('click', function() {
+        // Remove additional campaigns
+        const additionalCampaigns = document.querySelectorAll('.additional-campaign');
+        additionalCampaigns.forEach(item => item.remove());
+        
+        // Reset the offset and toggle buttons
+        document.getElementById('load-more').setAttribute('data-offset', 2);
+        document.getElementById('load-more').style.display = 'inline-block';
+        this.style.display = 'none';
+    });
+    
     </script>
 {% endblock %}
 
