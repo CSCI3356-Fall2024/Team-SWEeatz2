@@ -5,29 +5,34 @@
 
 {% block content %}
 <br><br><br>
+<h2 class="text-center mb-4" style="color: #611800;">Campaign Creation Page (Admin Only)</h2>
 <div class="row">
     <!-- Left Column: Existing Campaigns -->
     <div class="col-md-4">
         <h3>Existing Campaigns</h3>
-        <ul class="list-group">
+        <ul class="list-group" id="campaign-list">
             {% for campaign in campaigns %}
                 <li class="list-group-item">
+                    {% if campaign.image %}
+                        <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" style="width: 100%; height: auto;">
+                    {% endif %}
                     <h5>{{ campaign.title }}</h5>
                     <p>{{ campaign.description|truncatewords:20 }}</p>
                     <small>Start Date: {{ campaign.start_date }}</small><br>
                     <small>End Date: {{ campaign.end_date }}</small>
                 </li>
-            {% empty %}
-                <li class="list-group-item">No existing campaigns.</li>
             {% endfor %}
         </ul>
+        <!-- Load More Button -->
+        <button id="load-more" class="btn btn-secondary mt-3" data-offset="2">Load More</button>
     </div>
+    
     
 
     <!-- Right Column: Campaign Creation Form -->
     <div class="col-md-8">
         <h3>Create a New Campaign</h3>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
                 <label for="title">Campaign Title</label>
@@ -45,9 +50,38 @@
                 <label for="end_date">End Date</label>
                 <input type="date" class="form-control" id="end_date" name="end_date" required>
             </div>
+            <div class="form-group">
+                <label for="image">Campaign Image</label>
+                <input type="file" class="form-control-file" id="image" name="image">
+            </div>
             <button type="submit" class="btn btn-primary">Create Campaign</button>
         </form>
-    </div>
+    </div>    
 </div>
+
+<script>
+    document.getElementById('load-more').addEventListener('click', function() {
+        const offset = this.getAttribute('data-offset');
+        fetch(`/create-campaign/load_more/?offset=${offset}`)
+            .then(response => response.json())
+            .then(data => {
+                const campaignList = document.getElementById('campaign-list');
+                data.campaigns.forEach(campaign => {
+                    const item = document.createElement('li');
+                    item.className = 'list-group-item';
+                    item.innerHTML = `
+                        ${campaign.image_url ? `<img src="${campaign.image_url}" alt="${campaign.title}" style="width: 100%; height: auto;">` : ''}
+                        <h5>${campaign.title}</h5>
+                        <p>${campaign.description.substring(0, 100)}...</p>
+                        <small>Start Date: ${campaign.start_date}</small><br>
+                        <small>End Date: ${campaign.end_date}</small>
+                    `;
+                    campaignList.appendChild(item);
+                });
+                // Update offset for the next load
+                this.setAttribute('data-offset', parseInt(offset) + 2);
+            });
+    });    
+    </script>
 {% endblock %}
 

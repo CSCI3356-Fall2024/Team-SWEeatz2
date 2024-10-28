@@ -4,7 +4,8 @@ from .forms import StudentForm
 from .models import Student, Campaign
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-# Create your views here.
+from django.http import JsonResponse
+
 
 def home(request):
     return render(request, "home.html")
@@ -49,25 +50,48 @@ def student_list_view(request):
         role = "Student"
     return render(request, 'student_list.html', {'student': student, 'full_name': user.get_full_name(), 'role':role})
 
+
+
+
 def create_campaign(request):
     if request.method == 'POST':
-        # Get data from the form
+        # Process form data for creating a campaign
         title = request.POST.get('title')
         description = request.POST.get('description')
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
-
-        # Validate and save the data
+        image = request.FILES.get('image')
+        
         if title and description and start_date and end_date:
-            # Create a new Campaign instance
             Campaign.objects.create(
                 title=title,
                 description=description,
                 start_date=start_date,
-                end_date=end_date
+                end_date=end_date,
+                image=image
             )
-            return redirect('create_campaign')  # Redirect to the same page after saving
-
-    # If GET request, display the form and existing campaigns
-    campaigns = Campaign.objects.all()  # Retrieve all existing campaigns
+            return redirect('create_campaign')
+    
+    # Load only the top 2 campaigns initially
+    campaigns = Campaign.objects.all()[:2]
     return render(request, 'campaign_create.html', {'campaigns': campaigns})
+
+def load_more_campaigns(request):
+    """Handles loading additional campaigns via AJAX."""
+    offset = int(request.GET.get('offset', 2))
+    limit = 2  # Number of additional campaigns to load each time
+    campaigns = Campaign.objects.all()[offset:offset + limit]
+    
+    # Prepare data for JSON response
+    campaign_data = [
+        {
+            "title": campaign.title,
+            "description": campaign.description,
+            "start_date": campaign.start_date.strftime("%Y-%m-%d"),
+            "end_date": campaign.end_date.strftime("%Y-%m-%d"),
+            "image_url": campaign.image.url if campaign.image else None
+        }
+        for campaign in campaigns
+    ]
+    return JsonResponse({"campaigns": campaign_data})
+

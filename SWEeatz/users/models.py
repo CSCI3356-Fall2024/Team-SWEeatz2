@@ -82,6 +82,7 @@ class Campaign(models.Model):
     description = models.TextField(help_text="Enter a brief description of the campaign")
     start_date = models.DateField(help_text="Campaign start date")
     end_date = models.DateField(help_text="Campaign end date")
+    image = models.ImageField(upload_to='campaign_images/', blank=True, null=True, help_text="Upload an image for the campaign")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -89,5 +90,6 @@ class Campaign(models.Model):
         return self.title
 
     class Meta:
-        ordering = ['-start_date']  # Order by start date descending by default
+        ordering = ['-start_date']
+
 
