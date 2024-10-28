@@ -5,6 +5,7 @@ class StudentForm(forms.ModelForm):
 
     class Meta:
         model = Student
+        exclude = ['user']
         fields = '__all__'
         labels = {
             'student_id':'Student ID',
@@ -12,6 +13,8 @@ class StudentForm(forms.ModelForm):
             'school': 'School',
             'graduation_year': 'Graduation Year',
             'major': 'Primary Major',
+            'major2': 'Second Major (If Applicable)',
+            'profile_picture': 'Profile Picture',
         }
 
         widgets = {
@@ -19,13 +22,15 @@ class StudentForm(forms.ModelForm):
                 attrs= {'placeholder': 'e.g 1234567', 'class':'form-control'}),
             'name': forms.TextInput(
                 attrs={'placeholder': 'e.g. Baldwin', 'class': 'form-control'}),
-            'school': forms.TextInput(
+            'school': forms.Select(
                 attrs={'placeholder': 'e.g Boston College', 'class': 'form-control'}),
             'graduation_year': forms.Select(
                 attrs={'class': 'form-control'}),
             'major': forms.Select(
                 attrs={'class': 'form-control'}),
-            'minor': forms.Select(
+            'major2': forms.Select(
+                attrs={'class': 'form-control'}),
+            'profile_picture': forms.FileInput(
                 attrs={'class': 'form-control'}),
 
         }
