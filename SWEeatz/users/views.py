@@ -5,7 +5,7 @@ from .models import Student, Campaign
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.http import JsonResponse
-
+from django.contrib.auth.decorators import user_passes_test
 
 def home(request):
     return render(request, "home.html")
@@ -50,12 +50,14 @@ def student_list_view(request):
         role = "Student"
     return render(request, 'student_list.html', {'student': student, 'full_name': user.get_full_name(), 'role':role})
 
+# Custom function to check if user is an admin
+def is_admin(user):
+    return user.is_superuser
 
-
-
+@user_passes_test(is_admin, login_url='home')  # Redirects non-admins to home
 def create_campaign(request):
     if request.method == 'POST':
-        # Process form data for creating a campaign
+        # Handle the campaign creation form submission
         title = request.POST.get('title')
         description = request.POST.get('description')
         start_date = request.POST.get('start_date')
@@ -71,8 +73,8 @@ def create_campaign(request):
                 image=image
             )
             return redirect('create_campaign')
-    
-    # Load only the top 2 campaigns initially
+
+    # Show only the first 2 campaigns initially
     campaigns = Campaign.objects.all()[:2]
     return render(request, 'campaign_create.html', {'campaigns': campaigns})
 

@@ -23,9 +23,11 @@
                 <li class="nav-item">
                     <a href="{% url 'profile' %}" class="nav-link">View Profile</a>
                 </li>
-                <li class="nav-item">
-                    <a href="{% url 'create_campaign' %}" class="nav-link">Create Campaign</a>
-                </li>
+                {% if user.is_superuser %}
+                    <li class="nav-item">
+                        <a href="{% url 'create_campaign' %}" class="nav-link">Campaign Creation</a>
+                    </li>
+                {% endif %}
                 <li class="nav-item">
                     <a href="{% url 'account_logout' %}" class="nav-link">Logout</a>
                 </li>
