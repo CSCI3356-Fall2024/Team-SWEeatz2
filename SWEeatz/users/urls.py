@@ -17,6 +17,7 @@ urlpatterns = [
     path('create-campaign/load_more/', views.load_more_campaigns, name='load_more_campaigns'),
     path('update_campaign/<int:campaign_id>/', views.update_campaign, name="update_campaign"),
     path('delete_campaign/<int:campaign_id>/', views.delete_campaign, name="delete_campaign"),
+    path('landing/', views.landing, name='landing'),
     
 ]
 

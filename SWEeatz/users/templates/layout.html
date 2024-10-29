@@ -17,6 +17,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
+
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{% url 'landing' %}" class="nav-link">Landing Page</a>
+                </li>
+                {% endif %}
+
                 {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a href="{% url 'student_create' %}" class="nav-link">Edit Profile</a>
@@ -37,6 +44,7 @@
                     <a href="{% url 'account_logout' %}" class="nav-link">Logout</a>
                 </li>
                 {% endif %}
+
             </ul>
         </div>
     </nav>
