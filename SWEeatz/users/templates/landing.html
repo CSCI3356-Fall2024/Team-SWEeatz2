@@ -4,7 +4,114 @@
 {% block title %} Landing Page {% endblock %}
 
 {% block content %}
-<br><br><br>
-<h2 class="text-center mb-4" style="color: #611800;">Welcome To Eagle Earth!</h2>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            background-color: #f8e3df;
+        }
+        .leaderboard {
+            background-color: #ffe6e2;
+            width: 300px;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .top-scorers {
+            background-color: #b34532;
+            border-radius: 8px;
+            padding: 15px;
+            color: white;
+            text-align: center;
+            display: flex;
+            justify-content: space-around;
+        }
+        .top-scorer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .top-scorer img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+        .top-scorer p {
+            margin: 5px 0 0;
+        }
+        .user-list {
+            margin-top: 15px;
+        }
+        .user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .user-item.current-user {
+            background-color: #d5f5d3;
+        }
+    </style>
+</head>
+<body>
+    <br><br><br>
+    <h2 class="text-center mb-4" style="color: #611800;">Welcome to Eagle Earth!</h2>
+    <div class="leaderboard">
+        <!-- Top Scorers -->
+        <div class="top-scorers">
+            <div class="top-scorer">
+                <img src="user2.jpg" alt="User 2">
+                <p>2<br><strong>Kyle</strong></p>
+                <p>4235</p>
+            </div>
+            <div class="top-scorer">
+                <img src="user1.jpg" alt="User 1">
+                <p>1<br><strong>David</strong></p>
+                <p>4578</p>
+            </div>
+            <div class="top-scorer">
+                <img src="user3.jpg" alt="User 3">
+                <p>3<br><strong>Kate</strong></p>
+                <p>3967</p>
+            </div>
+        </div>
+
+        <!-- Other Users -->
+        <div class="user-list">
+            <div class="user-item">
+                <span>4 Shaun</span>
+                <span>3768</span>
+            </div>
+            <div class="user-item">
+                <span>5 Jingwei</span>
+                <span>3578</span>
+            </div>
+            <div class="user-item">
+                <span>6 Professor</span>
+                <span>3476</span>
+            </div>
+            <div class="user-item">
+                <span>7 Mark</span>
+                <span>3125</span>
+            </div>
+            <!-- Current User (if not in top ranks) -->
+            <div class="user-item current-user">
+                <span>167 You</span>
+                <span>857 ↑</span>
+            </div>
+        </div>
+    </div>
+
+</body>
 
 {% endblock %}
