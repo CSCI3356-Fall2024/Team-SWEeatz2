@@ -15,6 +15,9 @@ urlpatterns = [
     path('list/', views.student_list_view, name ="profile"),
     path('create-campaign/', views.create_campaign, name="create_campaign"),
     path('create-campaign/load_more/', views.load_more_campaigns, name='load_more_campaigns'),
+    path('update_campaign/<int:campaign_id>/', views.update_campaign, name="update_campaign"),
+    path('delete_campaign/<int:campaign_id>/', views.delete_campaign, name="delete_campaign"),
+    
 ]
 
 if settings.DEBUG:
