@@ -85,6 +85,7 @@ class Campaign(models.Model):
     image = models.ImageField(upload_to='campaign_images/', blank=True, null=True, help_text="Upload an image for the campaign")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    points = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title

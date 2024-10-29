@@ -64,6 +64,7 @@ def create_campaign(request):
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
         image = request.FILES.get('image')
+        points = request.POST.get('points', 0)
 
         if title and description and start_date and end_date:
             Campaign.objects.create(
@@ -71,7 +72,8 @@ def create_campaign(request):
                 description=description,
                 start_date=start_date,
                 end_date=end_date,
-                image=image
+                image=image,
+                points=points
             )
             return redirect('create_campaign')
 
@@ -87,6 +89,7 @@ def load_more_campaigns(request):
         {
             "title": campaign.title,
             "description": campaign.description,
+            "points": campaign.points,
             "start_date": campaign.start_date.strftime("%Y-%m-%d"),
             "end_date": campaign.end_date.strftime("%Y-%m-%d"),
             "image_url": campaign.image.url if campaign.image else None
