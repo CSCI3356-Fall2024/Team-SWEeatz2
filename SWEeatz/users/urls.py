@@ -19,7 +19,6 @@ urlpatterns = [
     path('delete_campaign/<int:campaign_id>/', views.delete_campaign, name="delete_campaign"),
     path('landing/', views.landing, name='landing'),
     path('rewards/', views.rewards_activity_view, name='rewards_activity'),
-    path('rewards/redeem/<int:reward_id>/', views.redeem_reward, name='redeem_reward'),
 ]
 
 if settings.DEBUG:

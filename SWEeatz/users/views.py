@@ -182,24 +182,6 @@ def rewards_activity_view(request):
     }
     return render(request, 'rewards_activity.html', context)
 
-def redeem_reward(request, reward_id):
-    reward = get_object_or_404(Reward, id=reward_id)
-    student = request.user.student
-
-    if student.points_balance >= reward.points_required:
-        # Deduct points and log the reward exchange
-        student.points_balance -= reward.points_required
-        student.save()
-        RewardExchange.objects.create(
-            student=student,
-            reward=reward,
-            points_used=reward.points_required
-        )
-        messages.success(request, f"You have redeemed {reward.title} for {reward.points_required} points.")
-    else:
-        messages.error(request, "You do not have enough points to redeem this reward.")
-
-    return redirect('rewards_activity')
 
 
 
