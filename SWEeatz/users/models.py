@@ -72,6 +72,7 @@ class Student(models.Model):
     major = models.CharField(max_length=100, choices=MAJOR_CHOICES, default='Computer Science')
     major2 = models.CharField(max_length=100, choices=MAJOR_CHOICES, default='N/A')
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+    points_balance = models.IntegerField(default=0, help_text="Student's current points balance")
 
     def __str__(self):
         return self.user.get_full_name()
@@ -94,3 +95,27 @@ class Campaign(models.Model):
         ordering = ['-start_date']
 
 
+class Reward(models.Model):
+    title = models.CharField(max_length=200, help_text="Enter the reward title")
+    description = models.TextField(help_text="Enter a brief description of the reward")
+    points_required = models.PositiveIntegerField(help_text="Number of points required to redeem")
+    available_from = models.DateField(help_text="Reward available from this date")
+    available_until = models.DateField(help_text="Reward available until this date")
+
+    def __str__(self):
+        return f"{self.title} - {self.points_required} Points"
+
+    class Meta:
+        ordering = ['available_from']
+
+class RewardExchange(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='reward_exchanges')
+    reward = models.ForeignKey(Reward, on_delete=models.CASCADE, related_name='exchanges')
+    date_redeemed = models.DateField(auto_now_add=True)
+    points_used = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.student.user.username} redeemed {self.reward.title} for {self.points_used} points"
+
+    class Meta:
+        ordering = ['-date_redeemed']

@@ -44,7 +44,11 @@
                     <a href="{% url 'account_logout' %}" class="nav-link">Logout</a>
                 </li>
                 {% endif %}
-
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{% url 'rewards_activity' %}" class="nav-link">Rewards</a> <!-- New Rewards link -->
+                </li>
+                {% endif %}
             </ul>
         </div>
     </nav>

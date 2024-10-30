@@ -74,3 +74,49 @@ footer {
     cursor: pointer; /* Ensures a pointer icon on hover */
 }
 
+.rewards-activity-page {
+    padding-top: 20px;
+    margin-top: 3cm;
+}
+
+.sidebar {
+    background-color: #611800;
+    color: white;
+    height: 100vh;
+    padding-top: 20px;
+}
+
+.sidebar .nav-link {
+    color: white;
+    font-size: 1.2em;
+}
+
+.sidebar .nav-link:hover {
+    text-decoration: underline;
+}
+
+.main-content {
+    padding: 20px;
+}
+
+.points-balance {
+    margin-bottom: 20px;
+}
+
+.completed-actions, .previous-exchanges, .available-rewards {
+    margin-bottom: 40px;
+}
+
+.action-item, .exchange-item, .reward-item {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
+
+.campaign-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 10px;
+}

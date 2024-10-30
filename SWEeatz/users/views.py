@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from .forms import StudentForm
-from .models import Student, Campaign
+from .models import Student, Campaign, Reward, RewardExchange
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.http import JsonResponse
@@ -157,7 +157,49 @@ def delete_campaign(request, campaign_id):
         except Campaign.DoesNotExist:
             return JsonResponse({"success": False, "error": "Campaign not found."})
 
+def rewards_activity_view(request):
+    user = request.user
+    student = user.student  # Assuming there's a Student profile related to the user
+    current_balance = student.points_balance
 
+    # Fetch completed campaigns
+    completed_campaigns = Campaign.objects.filter(end_date__lte=timezone.now())
+
+    # Fetch previous reward exchanges
+    previous_exchanges = RewardExchange.objects.filter(student=student)
+
+    # Fetch available rewards for redemption
+    possible_rewards = Reward.objects.filter(
+        available_from__lte=timezone.now(),
+        available_until__gte=timezone.now()
+    )
+
+    context = {
+        'current_balance': current_balance,
+        'completed_campaigns': completed_campaigns,
+        'previous_exchanges': previous_exchanges,
+        'possible_rewards': possible_rewards,
+    }
+    return render(request, 'rewards_activity.html', context)
+
+def redeem_reward(request, reward_id):
+    reward = get_object_or_404(Reward, id=reward_id)
+    student = request.user.student
+
+    if student.points_balance >= reward.points_required:
+        # Deduct points and log the reward exchange
+        student.points_balance -= reward.points_required
+        student.save()
+        RewardExchange.objects.create(
+            student=student,
+            reward=reward,
+            points_used=reward.points_required
+        )
+        messages.success(request, f"You have redeemed {reward.title} for {reward.points_required} points.")
+    else:
+        messages.error(request, "You do not have enough points to redeem this reward.")
+
+    return redirect('rewards_activity')
 
 
 

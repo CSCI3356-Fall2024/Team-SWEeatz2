@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container-fluid rewards-activity-page" style="margin-top: 3cm;">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 sidebar">
+            <ul class="nav flex-column">
+                <li class="nav-item"><a href="#" class="nav-link">Profile</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Feed</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Get Points</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Activity</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-10 main-content">
+            <!-- Points Balance - Centered Above Title -->
+            <div class="text-center mb-4">
+                <h4>Current Points Balance: <strong>{{ current_balance }}</strong></h4>
+            </div>
+
+            <!-- Title -->
+            <h2 class="text-center mb-5">Rewards Activity Page</h2>
+
+            <!-- Completed Actions Section -->
+            <h3>Completed Actions</h3>
+            <div class="completed-actions mb-5">
+                {% for campaign in completed_campaigns %}
+                <div class="action-item row align-items-center mb-3 p-3 border">
+                    <div class="col-2">
+                        <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="campaign-image img-fluid rounded">
+                    </div>
+                    <div class="col-8">
+                        <p class="mb-0 font-weight-bold">{{ campaign.title }}</p>
+                        <p class="text-muted">Date Completed: {{ campaign.end_date }}</p>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No completed actions yet.</p>
+                {% endfor %}
+            </div>
+
+            <!-- Previous Reward Exchanges Section -->
+            <h3>Previous Reward Exchanges</h3>
+            <div class="previous-exchanges mb-5">
+                {% for exchange in previous_exchanges %}
+                <div class="exchange-item row align-items-center mb-3 p-3 border">
+                    <div class="col-8">
+                        <p class="mb-0 font-weight-bold">{{ exchange.reward.title }}</p>
+                        <p class="text-muted">Points Used: {{ exchange.points_used }}</p>
+                        <p class="text-muted">Date Redeemed: {{ exchange.date_redeemed }}</p>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No rewards exchanged yet.</p>
+                {% endfor %}
+            </div>
+
+            <!-- Available Rewards Section -->
+            <h3>Available Rewards</h3>
+            <div class="available-rewards">
+                {% for reward in possible_rewards %}
+                <div class="reward-item row align-items-center mb-3 p-3 border">
+                    <div class="col-10">
+                        <h5>{{ reward.title }} - <span class="text-primary">{{ reward.points_required }} Points</span></h5>
+                        <p>{{ reward.description }}</p>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No rewards available at this time.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
