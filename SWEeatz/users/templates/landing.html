@@ -61,6 +61,13 @@
         .user-item.current-user {
             background-color: #d5f5d3;
         }
+        .campaign-image {
+        width: auto;
+        max-width: 225px !important;; 
+        max-height: 150px !important;; 
+        display: block !important;;
+        margin: 0 auto !important;; 
+        }
     </style>
 </head>
 <body>
@@ -110,6 +117,28 @@
                 <span>857 ↑</span>
             </div>
         </div>
+    </div>
+
+    <div class="campaigns">
+        <h3>Active Campaigns</h3>
+        <ul>
+            {% for campaign in campaigns %}
+            <li>
+                <h4>{{ campaign.title }}</h4>
+                <p>{{  campaign.description|truncatewords:15 }}</p>
+                <small>Start: {{ campaign.start_date }}</small><br>
+                <small>End: {{ campaign.end_date }}</small><br>
+                <strong>Points: {{ campaign.points }}</strong>
+                {% if campaign.image %}
+                    <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="campaign-image">
+                {% else %}
+                    <img src="{% static 'path/to/placeholder-image.jpg' %}" alt="No image available" class="campaign-image">
+                {% endif %}
+            </li>
+            {% empty %}
+                <p>No Active Campaigns. Please Check Back Later!</p>
+            {% endfor %}
+        </ul>
     </div>
 
 </body>

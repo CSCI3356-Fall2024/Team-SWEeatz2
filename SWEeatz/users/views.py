@@ -8,12 +8,14 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import user_passes_test
 import json
 from django.views.decorators.csrf import csrf_exempt
+from .models import Campaign
 
 def home(request):
     return render(request, "home.html")
 
 def landing(request):
-    return render(request, "landing.html")
+    campaigns = Campaign.objects.all()
+    return render(request, "landing.html", {'campaigns':campaigns})
 
 def logout_view(request):
     logout(request)
