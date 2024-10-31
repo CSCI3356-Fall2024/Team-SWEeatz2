@@ -8,14 +8,31 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import user_passes_test
 import json
 from django.views.decorators.csrf import csrf_exempt
-from .models import Campaign
+from .models import Campaign, Student
 
 def home(request):
     return render(request, "home.html")
 
 def landing(request):
     campaigns = Campaign.objects.all()
-    return render(request, "landing.html", {'campaigns':campaigns})
+    top_3_students = Student.objects.order_by('-points_balance')[:3]
+    other_top_students = Student.objects.order_by('-points_balance')[3:6]
+
+    current_user = request.user
+    try:
+        current_student = Student.objects.get(user=current_user)
+    except:
+        current_student = None
+    
+    context = {
+        'top_3_students':top_3_students,
+        'other_top_students':other_top_students,
+        'current_student':current_student,
+        'user_not_in_top':current_student not in top_3_students and current_student not in other_top_students,
+        'campaigns':campaigns,
+    }
+    return render(request, 'landing.html', context)
+    #return render(request, "landing.html", {'campaigns':campaigns})
 
 def logout_view(request):
     logout(request)
