@@ -1,3 +1,4 @@
+/* Original base styles */
 body {
     background-color: #dad0d0; 
     color: #611800; 
@@ -12,13 +13,46 @@ body {
     color: #dad0d0 !important; 
     font-weight: bold;
     font-size: 1.8em; 
-    text-decoration: none !important; /* Remove underline */
+    text-decoration: none !important;
+    position: relative;
+    transform: translateY(0);
+    transition: all 0.3s ease-in-out;
+}
+
+.navbar-brand:hover {
+    transform: translateY(-2px);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .nav-link {
     color: #dad0d0 !important; 
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
 }
 
+/* Updated hover effect for navbar buttons */
+.nav-link:hover {
+    color: #ff9e80 !important; /* Warmer, slightly orange tint */
+}
+
+/* Underline animation for nav links */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #ff9e80; /* Matching the hover text color */
+    transition: width 0.3s ease-in-out;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Rest of your original styles */
 .jumbotron {
     background-color: #dad0d0; 
     color: #611800;
@@ -33,7 +67,7 @@ h2 {
 }
 
 p {
-    text-align: center; /* Center the guide text */
+    text-align: center;
 }
 
 .btn-google {
@@ -43,14 +77,14 @@ p {
     border-radius: 25px;
     padding: 10px 20px;
     font-size: 1.2em;
-    text-decoration: none; /* Remove underline from the button */
+    text-decoration: none;
     display: inline-block;
 }
 
 .btn-google:hover {
-    background-color: #dad0d0; /* grey on hover */
-    color: #611800; /* Maroon */
-    text-decoration: none; /* No underline on hover */
+    background-color: #dad0d0;
+    color: #611800;
+    text-decoration: none;
 }
 
 footer {
@@ -62,61 +96,5 @@ footer {
     width: 100%;
     bottom: 0;
 }
-.three-dots-btn {
-    position: absolute;
-    top: 0px;
-    right: 10px;
-    color: #611800;
-    font-size: 1.2rem;
-    padding: 0;
-    border: none;
-    background: none;
-    cursor: pointer; /* Ensures a pointer icon on hover */
-}
 
-.rewards-activity-page {
-    padding-top: 20px;
-    margin-top: 3cm;
-}
-
-.sidebar {
-    background-color: #611800;
-    color: white;
-    height: 100vh;
-    padding-top: 20px;
-}
-
-.sidebar .nav-link {
-    color: white;
-    font-size: 1.2em;
-}
-
-.sidebar .nav-link:hover {
-    text-decoration: underline;
-}
-
-.main-content {
-    padding: 20px;
-}
-
-.points-balance {
-    margin-bottom: 20px;
-}
-
-.completed-actions, .previous-exchanges, .available-rewards {
-    margin-bottom: 40px;
-}
-
-.action-item, .exchange-item, .reward-item {
-    border: 1px solid #ccc;
-    padding: 15px;
-    margin-bottom: 10px;
-    background-color: #f9f9f9;
-}
-
-.campaign-image {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    margin-right: 10px;
-}
+.three
