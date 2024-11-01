@@ -17,7 +17,7 @@
         }
         .leaderboard {
             background-color: #ffe6e2;
-            width: 300px;
+            width: 50%;
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -68,8 +68,27 @@
         display: block;
         margin: 0 auto; 
         }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .sections {
+            display: flex;
+        }
+        .campaigns {
+            width: 50%;
+            padding: 20px;
+        }
+        .text-center{
+            text-align: center;
+            margin-bottom: 20px;
+            color:#611800;
+        }
     </style>
 </head>
+
 <body>
 <!--
     ORIGINAL TEST HTML (NON-DYNAMIC)
@@ -122,64 +141,70 @@
         </div>
     </div>
 -->
-
-
-<h2 class="text-center mb-4" style="color: #611800;">Welcome to Eagle Earth!</h2>
-    <div class="leaderboard">
-        
-        <!-- Top 3 Scorers -->
-        <div class="top-scorers">
-            {% for student in top_3_students %}
-                <div class="top-scorer">
-                    <img src="{{ student.profile_picture.url }}" alt="{{ student.user.get_full_name }}">
-                    <p>Rank: {{ forloop.counter }}<br><strong>{{ student.user.first_name }}</strong></p>
-                    <p>{{ student.points_balance }}</p>
-                </div>
-            {% endfor %}
-        </div>
-
-        <!-- Other Top Students -->
-        <div class="user-list">
-            {% for student in other_top_students %}
-                <div class="user-item">
-                    <span>{{ forloop.counter|add:3 }} {{ student.user.first_name }}</span>
-                    <span>{{ student.points_balance }}</span>
-                </div>
-            {% endfor %}
-        </div>
-
-        <!-- Current User if not in top ranks -->
-        {% if user_not_in_top and current_student %}
-            <div class="user-item current-user">
-                <span>{{ current_student.user.first_name }}</span>
-                <span>{{ current_student.points_balance }}</span>
+<br><br>
+<div style="width: 100%;">
+    <h2 class="text-center mb-4" style="color: #611800;">Welcome to Eagle Earth!</h2>
+</div>
+<div class="container">
+    <br>
+    <div class = "sections">
+        <div class="leaderboard">
+            <h2>Leaderboard</h2>
+            
+            <!-- Top 3 Scorers -->
+            <div class="top-scorers">
+                {% for student in top_3_students %}
+                    <div class="top-scorer">
+                        <img src="{{ student.profile_picture.url }}" alt="{{ student.user.get_full_name }}">
+                        <p>Rank: {{ forloop.counter }}<br><strong>{{ student.user.first_name }}</strong></p>
+                        <p>{{ student.points_balance }}</p>
+                    </div>
+                {% endfor %}
             </div>
-        {% endif %}
+
+            <!-- Other Top Students -->
+            <div class="user-list">
+                {% for student in other_top_students %}
+                    <div class="user-item">
+                        <span>{{ forloop.counter|add:3 }} {{ student.user.first_name }}</span>
+                        <span>{{ student.points_balance }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Current User if not in top ranks -->
+            {% if user_not_in_top and current_student %}
+                <div class="user-item current-user">
+                    <span>{{ current_student.user.first_name }}</span>
+                    <span>{{ current_student.points_balance }}</span>
+                </div>
+            {% endif %}
+        </div>
+
+
+        <div class="campaigns">
+            <h3>Active Campaigns</h3>
+            <ul>
+                {% for campaign in campaigns %}
+                <li>
+                    <h4>{{ campaign.title }}</h4>
+                    <p>{{  campaign.description|truncatewords:15 }}</p>
+                    <small>Start: {{ campaign.start_date }}</small><br>
+                    <small>End: {{ campaign.end_date }}</small><br>
+                    <strong>Points: {{ campaign.points }}</strong>
+                    {% if campaign.image %}
+                        <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="campaign-image" style="width: 50%; height: auto;">
+                    {% else %}
+                        <img src="{% static 'path/to/placeholder-image.jpg' %}" alt="No image available" class="campaign-image">
+                    {% endif %}
+                </li>
+                {% empty %}
+                    <p>No Active Campaigns. Please Check Back Later!</p>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
-
-
-    <div class="campaigns">
-        <h3>Active Campaigns</h3>
-        <ul>
-            {% for campaign in campaigns %}
-            <li>
-                <h4>{{ campaign.title }}</h4>
-                <p>{{  campaign.description|truncatewords:15 }}</p>
-                <small>Start: {{ campaign.start_date }}</small><br>
-                <small>End: {{ campaign.end_date }}</small><br>
-                <strong>Points: {{ campaign.points }}</strong>
-                {% if campaign.image %}
-                    <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="campaign-image" style="width: 30%; height: auto;">
-                {% else %}
-                    <img src="{% static 'path/to/placeholder-image.jpg' %}" alt="No image available" class="campaign-image">
-                {% endif %}
-            </li>
-            {% empty %}
-                <p>No Active Campaigns. Please Check Back Later!</p>
-            {% endfor %}
-        </ul>
-    </div>
-
+</div>
 </body>
 
 {% endblock %}
