@@ -160,7 +160,7 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend"
 )
 
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/landing/"
 LOGOUT_REDIRECT_URL = "/"
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
@@ -168,4 +168,13 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 
 STATIC_URL = '/static/'
+
+SOCIALACCOUNT_LOGIN_ON_GET = True
+ACCOUNT_LOGIN_ON_GET = True
+SOCIALACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_LOGOUT_ON_GET = True
+
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'  # or 'https' in production
+SOCIALACCOUNT_ADAPTER = 'allauth.socialaccount.adapter.DefaultSocialAccountAdapter'
+SOCIALACCOUNT_AUTO_SIGNUP = True  # Skip the signup form
 
