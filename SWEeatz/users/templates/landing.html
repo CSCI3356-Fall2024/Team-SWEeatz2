@@ -63,15 +63,17 @@
         }
         .campaign-image {
         width: auto;
-        max-width: 225px !important;; 
-        max-height: 150px !important;; 
-        display: block !important;;
-        margin: 0 auto !important;; 
+        max-width: 450px; 
+        max-height: 300px; 
+        display: block;
+        margin: 0 auto; 
         }
     </style>
 </head>
 <body>
 <!--
+    ORIGINAL TEST HTML (NON-DYNAMIC)
+    
     <br><br><br>
     <h2 class="text-center mb-4" style="color: #611800;">Welcome to Eagle Earth!</h2>
     <div class="leaderboard">
@@ -167,7 +169,7 @@
                 <small>End: {{ campaign.end_date }}</small><br>
                 <strong>Points: {{ campaign.points }}</strong>
                 {% if campaign.image %}
-                    <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="campaign-image">
+                    <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="campaign-image" style="width: 30%; height: auto;">
                 {% else %}
                     <img src="{% static 'path/to/placeholder-image.jpg' %}" alt="No image available" class="campaign-image">
                 {% endif %}
