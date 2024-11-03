@@ -15,7 +15,7 @@
                 <a href="{% url 'account_logout' %}" class="btn btn-danger">Logout</a>
             {% endif %}
             {% if not user.is_authenticated %}
-                <a href="{% provider_login_url 'google' process='login' next='/landing/' %}" class="btn btn-lg" style="background-color: #611800; color: white;">
+                <a href="{% provider_login_url 'google' process='login' next='/create/' %}" class="btn btn-lg" style="background-color: #611800; color: white;">
                     Login with Google
                 </a>
             {% endif %}
