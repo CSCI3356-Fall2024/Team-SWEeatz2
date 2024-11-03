@@ -1,4 +1,3 @@
-/* Original base styles */
 body {
     background-color: #dad0d0; 
     color: #611800; 
@@ -52,7 +51,6 @@ body {
     width: 100%;
 }
 
-/* Rest of your original styles */
 .jumbotron {
     background-color: #dad0d0; 
     color: #611800;
