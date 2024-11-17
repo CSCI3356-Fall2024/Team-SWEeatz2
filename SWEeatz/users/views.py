@@ -206,7 +206,8 @@ def rewards_activity_view(request):
     }
     return render(request, 'rewards_activity.html', context)
 
-
+def actions(request):
+    return render(request, 'actions.html')
 
 
 

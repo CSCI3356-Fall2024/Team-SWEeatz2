@@ -26,6 +26,12 @@
 
                 {% if user.is_authenticated %}
                 <li class="nav-item">
+                    <a href="{% url 'actions' %}" class="nav-link">Actions</a>
+                </li>
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                <li class="nav-item">
                     <a href="{% url 'student_create' %}" class="nav-link">Edit Profile</a>
                 </li>
                 {% endif %}
