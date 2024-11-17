@@ -9,12 +9,17 @@ from django.contrib.auth.decorators import user_passes_test
 import json
 from django.views.decorators.csrf import csrf_exempt
 from .models import Campaign, Student
+from datetime import date
 
 def home(request):
     return render(request, "home.html")
 
 def landing(request):
-    campaigns = Campaign.objects.all()
+    today = date.today()
+
+    #campaigns = Campaign.objects.all()
+    campaigns = Campaign.objects.filter(start_date__lte=today, end_date__gte=today)
+
     top_3_students = Student.objects.order_by('-points_balance')[:3]
     other_top_students = Student.objects.order_by('-points_balance')[3:6]
 
