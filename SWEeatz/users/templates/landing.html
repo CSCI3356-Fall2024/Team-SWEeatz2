@@ -86,6 +86,17 @@
             margin-bottom: 20px;
             color:#611800;
         }
+        .campaign-box {
+            background-color: #ffe6e2; 
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -187,20 +198,23 @@
 
 
         <div class="campaigns">
-            <h3>Active Campaigns</h3>
+            <h3><strong>Active Campaigns</strong></h3>
             <ul>
                 {% for campaign in campaigns %}
                 <li>
-                    <h4>{{ campaign.title }}</h4>
-                    <p>{{  campaign.description|truncatewords:15 }}</p>
-                    <small>Start: {{ campaign.start_date }}</small><br>
-                    <small>End: {{ campaign.end_date }}</small><br>
-                    <strong>Points: {{ campaign.points }}</strong>
-                    {% if campaign.image %}
-                        <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="campaign-image" style="width: 50%; height: auto;">
-                    {% else %}
-                        <img src="{% static 'path/to/placeholder-image.jpg' %}" alt="No image available" class="campaign-image">
-                    {% endif %}
+                    <div class="campaign-box">
+                        <h4>{{ campaign.title }}</h4>
+                        <p>{{  campaign.description|truncatewords:15 }}</p>
+                        <small>Start: {{ campaign.start_date }}</small><br>
+                        <small>End: {{ campaign.end_date }}</small><br>
+                        <strong>Points: {{ campaign.points }}</strong>
+                        {% if campaign.image %}
+                            <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="campaign-image" style="width: 50%; height: auto;">
+                        {% else %}
+                            <!-- Need to change placeholder path here -->
+                            <img src="{% static 'path/to/placeholder-image.jpg' %}" alt="No image available" class="campaign-image">
+                        {% endif %}
+                    </div>
                 </li>
                 {% empty %}
                     <p>No Active Campaigns. Please Check Back Later!</p>
