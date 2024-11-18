@@ -251,3 +251,8 @@ def action_page_view(request):
     return render(request, "action_page.html", {
         "ongoing_campaigns": ongoing_campaigns,
     })
+
+def campaign_data_view(request):
+    campaigns = Campaign.objects.all()
+    context = {'campaigns': campaigns}
+    return render(request, 'campaign_data.html', context)

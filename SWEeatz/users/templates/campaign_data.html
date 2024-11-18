@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}Campaign Data{% endblock %}
+
+{% block content %}
+<br><br>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Campaign Data</h2>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Points</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for campaign in campaigns %}
+            <tr>
+                <td>{{ campaign.title }}</td>
+                <td>{{ campaign.description }}</td>
+                <td>{{ campaign.points }}</td>
+                <td>{{ campaign.start_date }}</td>
+                <td>{{ campaign.end_date }}</td>
+                <td>
+                    {% if campaign.image %}
+                        <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" style="width: 100px; height: auto;">
+                    {% else %}
+                        <span>No image</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No campaigns available</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

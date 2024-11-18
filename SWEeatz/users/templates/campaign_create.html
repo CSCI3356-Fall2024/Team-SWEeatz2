@@ -140,7 +140,10 @@
             </div>
             <button type="submit" class="btn btn-primary">Create Campaign</button>
         </form>
-    </div>    
+        <div class="text-right mb-4">
+            <a href="{% url 'campaign_data' %}" class="btn btn-info">View Campaign Data</a>
+        </div>        
+    </div>       
 </div>
 
 {% comment %} Define placeholder image URL for JavaScript use {% endcomment %}
@@ -286,7 +289,7 @@
         })
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
+        i    if (data.success) {
                 location.reload();
             } else {
                 alert("Failed to delete campaign.");

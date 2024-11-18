@@ -20,6 +20,7 @@ urlpatterns = [
     path('landing/', views.landing, name='landing'),
     path('rewards/', views.rewards_activity_view, name='rewards_activity'),
     path('actions/', views.action_page_view, name='actions'),
+    path('campaign-data/', views.campaign_data_view, name='campaign_data'),
 ]
 
 if settings.DEBUG:
