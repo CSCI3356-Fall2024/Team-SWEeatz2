@@ -5,7 +5,11 @@
 
 {% block content %}
 <br><br><br>
-<h2 class="text-center mb-4" style="color: #611800;">Campaign Creation Page (Admin Only)</h2>
+<div class="d-flex justify-content-center align-items-center position-relative mb-4">
+    <h2 class="text-center m-0" style="color: #611800;">Campaign Creation Page (Admin Only)</h2>
+    <a href="{% url 'campaign_data' %}" class="btn btn-primary position-absolute" style="right: 0;">View Campaign Data</a>
+</div>
+
 <div class="row">
 <!-- Left Column: Existing Campaigns -->
 <div class="col-md-4">
@@ -139,10 +143,7 @@
                 <input type="file" class="form-control-file" id="image" name="image">
             </div>
             <button type="submit" class="btn btn-primary">Create Campaign</button>
-        </form>
-        <div class="text-right mb-4">
-            <a href="{% url 'campaign_data' %}" class="btn btn-info">View Campaign Data</a>
-        </div>        
+        </form>      
     </div>       
 </div>
 
