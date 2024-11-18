@@ -252,7 +252,18 @@ def action_page_view(request):
         "ongoing_campaigns": ongoing_campaigns,
     })
 
+from django.utils.timezone import now
+
 def campaign_data_view(request):
-    campaigns = Campaign.objects.all()
-    context = {'campaigns': campaigns}
+    today = now().date()
+
+    past_campaigns = Campaign.objects.filter(end_date__lt=today)
+    present_campaigns = Campaign.objects.filter(start_date__lte=today, end_date__gte=today)
+    future_campaigns = Campaign.objects.filter(start_date__gt=today)
+
+    context = {
+        'past_campaigns': past_campaigns,
+        'present_campaigns': present_campaigns,
+        'future_campaigns': future_campaigns
+    }
     return render(request, 'campaign_data.html', context)
