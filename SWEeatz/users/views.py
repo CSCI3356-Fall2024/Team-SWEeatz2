@@ -1,15 +1,17 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from .forms import StudentForm
-from .models import Student, Campaign, Reward, RewardExchange
+from .models import Student, Campaign, Reward, RewardExchange, Action, CompletedAction
 from django.shortcuts import get_object_or_404
-from django.utils import timezone
+from django.utils import timezone 
+from django.utils.timezone import now
 from django.http import JsonResponse
 from django.contrib.auth.decorators import user_passes_test
 import json
 from django.views.decorators.csrf import csrf_exempt
 from .models import Campaign, Student
 from datetime import date
+from django.contrib import messages
 
 def home(request):
     return render(request, "home.html")
@@ -206,9 +208,46 @@ def rewards_activity_view(request):
     }
     return render(request, 'rewards_activity.html', context)
 
-def actions(request):
+#def actions(request):
     return render(request, 'actions.html')
 
+def action_page_view(request):
+    user = request.user
+    student = user.student  # Assuming a one-to-one relationship between User and Student
 
+    # Fetch ongoing campaigns (start_date <= today <= end_date)
+    ongoing_campaigns = Campaign.objects.filter(start_date__lte=now(), end_date__gte=now())
 
+    if request.method == "POST":
+        campaign_ids = request.POST.getlist("campaigns")  # Get selected campaign IDs
+        photo = request.FILES.get("photo")  # Get uploaded photo
 
+        # Ensure at least one campaign and a photo are selected
+        if not campaign_ids or not photo:
+            messages.error(request, "Please select at least one campaign and upload a photo.")
+            return redirect("action_page")
+
+        # Loop through selected campaigns and create completed actions
+        for campaign_id in campaign_ids:
+            campaign = Campaign.objects.get(id=campaign_id)
+
+            CompletedAction.objects.create(
+                student=student,
+                campaign=campaign,
+                photo=photo,
+                date_completed=now(),
+                points_earned=campaign.points,
+            )
+
+            # Update student's points balance
+            student.points_balance += campaign.points
+
+        # Save student points balance update
+        student.save()
+
+        messages.success(request, "Action submitted successfully! Points have been added to your account.")
+        return redirect("rewards_activity")
+
+    return render(request, "action_page.html", {
+        "ongoing_campaigns": ongoing_campaigns,
+    })

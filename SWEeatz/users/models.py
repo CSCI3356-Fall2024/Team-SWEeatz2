@@ -119,3 +119,24 @@ class RewardExchange(models.Model):
 
     class Meta:
         ordering = ['-date_redeemed']
+
+class Action(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    points = models.PositiveIntegerField()
+    is_active = models.BooleanField(default=True)
+    is_daily_challenge = models.BooleanField(default=False)
+    date = models.DateField(null=True, blank=True)  # For daily challenge actions
+
+    def __str__(self):
+        return self.name
+
+class CompletedAction(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="completed_actions")
+    action = models.ForeignKey(Action, on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to="action_photos/")
+    date_completed = models.DateTimeField()
+    points_earned = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.student.user.username} - {self.action.name}"

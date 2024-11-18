@@ -19,7 +19,7 @@ urlpatterns = [
     path('delete_campaign/<int:campaign_id>/', views.delete_campaign, name="delete_campaign"),
     path('landing/', views.landing, name='landing'),
     path('rewards/', views.rewards_activity_view, name='rewards_activity'),
-    path('actions/', views.actions, name='actions'),
+    path('actions/', views.action_page_view, name='actions'),
 ]
 
 if settings.DEBUG:

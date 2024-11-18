@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block title %}Action Page{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5 pt-5">
+    <h1 class="text-center">Action Page</h1>
+    <p class="text-center">Select a campaign, upload a photo, and submit to earn points!</p>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h2 class="mt-4">What Sustainable Action Did You Perform Today?</h2>
+
+        {% if ongoing_campaigns %}
+            <div class="form-group">
+                <ol style="list-style: decimal inside;"> <!-- Explicit numbering style -->
+                    {% for campaign in ongoing_campaigns %}
+                        <li class="mb-4">
+                            <input
+                                type="checkbox"
+                                id="campaign_{{ campaign.id }}"
+                                name="campaigns"
+                                value="{{ campaign.id }}"
+                                class="form-check-input">
+                            <label class="form-check-label" for="campaign_{{ campaign.id }}">
+                                {{ campaign.title }} ({{ campaign.start_date }} - {{ campaign.end_date }})
+                            </label>
+                            {% if campaign.image %}
+                                <div class="mt-2">
+                                    <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="img-fluid rounded" style="max-width: 100%; height: auto;">
+                                </div>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ol>
+            </div>
+        {% else %}
+            <p class="text-muted text-center">No ongoing campaigns available at the moment.</p>
+        {% endif %}
+
+        <div class="form-group mt-3">
+            <label for="photo">Upload a Photo (Required)</label>
+            <input type="file" id="photo" name="photo" class="form-control" required>
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary btn-lg">Submit Action</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
