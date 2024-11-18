@@ -88,6 +88,7 @@ def is_admin(user):
 @user_passes_test(is_admin, login_url='home')  # Redirects non-admins to home
 
 def create_campaign(request):
+    today = date.today()
     if request.method == 'POST':
         # Handle the form submission
         title = request.POST.get('title')
@@ -109,13 +110,16 @@ def create_campaign(request):
             return redirect('create_campaign')
 
     # Get the first 2 campaigns and the total count
-    campaigns = Campaign.objects.all()[:2]
-    total_campaigns = Campaign.objects.count()
+    campaigns =Campaign.objects.filter(start_date__lte=today, end_date__gte=today)[:2]
+    total_campaigns =Campaign.objects.filter(start_date__lte=today, end_date__gte=today).count()
     return render(request, 'campaign_create.html', {'campaigns': campaigns, 'total_campaigns': total_campaigns})
 
 def load_more_campaigns(request):
+    today = date.today()
     offset = int(request.GET.get('offset', 2))
-    campaigns = Campaign.objects.all()[offset:]
+
+    # Filter for active campaigns only
+    campaigns = Campaign.objects.filter(start_date__lte=today, end_date__gte=today)[offset:]
     campaign_data = [
         {
             "id": campaign.id,
