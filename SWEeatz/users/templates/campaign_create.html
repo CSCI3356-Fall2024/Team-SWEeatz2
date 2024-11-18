@@ -154,7 +154,7 @@
     
         document.getElementById('load-more').addEventListener('click', function() {
             const offset = parseInt(this.getAttribute('data-offset'));
-    
+
             fetch(`/create-campaign/load_more/?offset=${offset}`)
                 .then(response => response.json())
                 .then(data => {
@@ -163,10 +163,9 @@
                         const item = document.createElement('li');
                         item.className = 'list-group-item additional-campaign';
                         item.style.position = 'relative';
-    
-                        // Check if image URL exists, otherwise use the placeholder image
+
                         const imageUrl = campaign.image_url ? campaign.image_url : placeholderImage;
-    
+
                         item.innerHTML = `
                             <button 
                                 class="btn btn-link three-dots-btn" 
@@ -190,51 +189,51 @@
                             <small>Start Date: ${campaign.start_date}</small><br>
                             <small>End Date: ${campaign.end_date}</small>
                         `;
-    
+
                         campaignList.appendChild(item);
                     });
-    
+
                     const newOffset = offset + data.campaigns.length;
                     this.setAttribute('data-offset', newOffset);
-    
+
                     if (newOffset >= totalCampaigns) {
                         this.style.display = 'none';
                     }
-    
+
                     document.getElementById('show-less').style.display = 'inline-block';
                 });
         });
-    
-        // Show less functionality to hide loaded campaigns
+
         document.getElementById('show-less').addEventListener('click', function() {
             const additionalCampaigns = document.querySelectorAll('.additional-campaign');
             additionalCampaigns.forEach(item => item.remove());
-    
+
             document.getElementById('load-more').setAttribute('data-offset', 2);
             document.getElementById('load-more').style.display = 'inline-block';
             this.style.display = 'none';
         });
     });
     
-    
-    // Edit modal function, refactored for dynamic campaigns
+    // Function to open the Edit Campaign modal
     function openEditModal(id, title, description, startDate, endDate, points, imageUrl) {
+        console.log("Opening edit modal for campaign ID:", id);
         document.getElementById('edit-campaign-id').value = id;
         document.getElementById('edit-title').value = title;
         document.getElementById('edit-description').value = description;
         document.getElementById('edit-start-date').value = startDate || '';
         document.getElementById('edit-end-date').value = endDate || '';
         document.getElementById('edit-points').value = points;
-    
+
         const currentImage = document.getElementById('current-image');
-        if (imageUrl && imageUrl !== 'placeholderImage') {
+        if (imageUrl && imageUrl !== placeholderImage) {
             currentImage.src = imageUrl;
             currentImage.style.display = 'block';
         } else {
             currentImage.style.display = 'none';
         }
     }
-    
+
+    // Function to save the changes in the Edit Campaign modal
     function saveCampaign() {
         const campaignId = document.getElementById('edit-campaign-id').value;
         const title = document.getElementById('edit-title').value;
@@ -244,8 +243,7 @@
         const points = document.getElementById('edit-points').value;
         const image = document.getElementById('edit-image').files[0];
         const deleteImage = document.getElementById('delete-image').checked;
-    
-        // Use FormData to handle the file upload and deletion flags
+
         const formData = new FormData();
         formData.append('title', title);
         formData.append('description', description);
@@ -258,11 +256,11 @@
         if (deleteImage) {
             formData.append('delete_image', 'true');  // Only delete image, not the campaign
         }
-    
+
         fetch(`/update_campaign/${campaignId}/`, {
             method: 'POST',
             headers: {
-                'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token
+                'X-CSRFToken': '{{ csrf_token }}'
             },
             body: formData
         })
@@ -276,11 +274,11 @@
         })
         .catch(error => console.error("Error:", error));
     }
-    
-    
+
+    // Function to delete the campaign in the Edit Campaign modal
     function deleteCampaign() {
         const campaignId = document.getElementById('edit-campaign-id').value;
-    
+
         fetch(`/delete_campaign/${campaignId}/`, {
             method: 'POST',
             headers: {
@@ -289,14 +287,13 @@
         })
         .then(response => response.json())
         .then(data => {
-        i    if (data.success) {
+            if (data.success) {
                 location.reload();
             } else {
                 alert("Failed to delete campaign.");
             }
         });
     }
-    
 </script>
 
 {% endblock %}

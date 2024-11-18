@@ -130,10 +130,6 @@ def load_more_campaigns(request):
     ]
     return JsonResponse({"campaigns": campaign_data})
 
-
-
-
-
 @csrf_exempt
 def update_campaign(request, campaign_id):
     if request.method == 'POST':
