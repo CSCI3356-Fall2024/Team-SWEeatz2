@@ -87,6 +87,8 @@ class Campaign(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     points = models.IntegerField(default=0)
+    completed_by = models.JSONField(default=list, help_text="List of users who have completed the campaign")
+
 
     def __str__(self):
         return self.title
