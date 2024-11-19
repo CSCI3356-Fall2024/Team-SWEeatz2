@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 # Uncomment whichever one works for you for now
 # SITE_ID = 2
-SITE_ID = 2 
+SITE_ID = 3
 
 INSTALLED_APPS = [
     'django.contrib.admin',

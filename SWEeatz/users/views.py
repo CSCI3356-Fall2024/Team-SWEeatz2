@@ -213,39 +213,42 @@ def rewards_activity_view(request):
 
 def action_page_view(request):
     user = request.user
-    student = user.student  # Assuming a one-to-one relationship between User and Student
-
-    # Fetch ongoing campaigns (start_date <= today <= end_date)
+    student = user.student
     ongoing_campaigns = Campaign.objects.filter(start_date__lte=now(), end_date__gte=now())
 
     if request.method == "POST":
-        campaign_ids = request.POST.getlist("campaigns")  # Get selected campaign IDs
-        photo = request.FILES.get("photo")  # Get uploaded photo
+        campaign_ids = request.POST.getlist("campaigns")
+        photo = request.FILES.get("photo")
 
-        # Ensure at least one campaign and a photo are selected
         if not campaign_ids or not photo:
             messages.error(request, "Please select at least one campaign and upload a photo.")
             return redirect("action_page")
 
-        # Loop through selected campaigns and create completed actions
         for campaign_id in campaign_ids:
             campaign = Campaign.objects.get(id=campaign_id)
+            
+            # Create Action first
+            action = Action.objects.create(
+                name=f"{campaign.title} Completion",
+                description=f"Completed {campaign.title}",
+                points=campaign.points,
+                is_active=True
+            )
 
+            # Then create CompletedAction with both action and campaign
             CompletedAction.objects.create(
                 student=student,
+                action=action,
                 campaign=campaign,
                 photo=photo,
                 date_completed=now(),
-                points_earned=campaign.points,
+                points_earned=campaign.points
             )
 
-            # Update student's points balance
             student.points_balance += campaign.points
 
-        # Save student points balance update
         student.save()
-
-        messages.success(request, "Action submitted successfully! Points have been added to your account.")
+        messages.success(request, "Action submitted successfully!")
         return redirect("rewards_activity")
 
     return render(request, "action_page.html", {

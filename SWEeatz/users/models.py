@@ -134,6 +134,7 @@ class Action(models.Model):
 class CompletedAction(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="completed_actions")
     action = models.ForeignKey(Action, on_delete=models.CASCADE)
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, null=True)  # Add null=True
     photo = models.ImageField(upload_to="action_photos/")
     date_completed = models.DateTimeField()
     points_earned = models.PositiveIntegerField()
