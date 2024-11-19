@@ -189,7 +189,7 @@ def rewards_activity_view(request):
     current_balance = student.points_balance
 
     # Fetch completed campaigns
-    completed_campaigns = Campaign.objects.filter(end_date__lte=timezone.now())
+    completed_actions = CompletedAction.objects.filter(student=student)
 
     # Fetch previous reward exchanges
     previous_exchanges = RewardExchange.objects.filter(student=student)
@@ -202,7 +202,7 @@ def rewards_activity_view(request):
 
     context = {
         'current_balance': current_balance,
-        'completed_campaigns': completed_campaigns,
+        'completed_actions': completed_actions,
         'previous_exchanges': previous_exchanges,
         'possible_rewards': possible_rewards,
     }
