@@ -1,5 +1,5 @@
 from django import forms
-from .models import Student
+from .models import Student, Reward
 
 class StudentForm(forms.ModelForm):
 
@@ -34,3 +34,8 @@ class StudentForm(forms.ModelForm):
                 attrs={'class': 'form-control'}),
 
         }
+
+class RewardForm(forms.ModelForm):
+    class Meta:
+        model = Reward
+        fields = ['title', 'description', 'points_required', 'available_from', 'available_until']

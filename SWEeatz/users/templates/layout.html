@@ -49,6 +49,11 @@
                     <li class="nav-item">
                         <a href="{% url 'create_campaign' %}" class="nav-link">Campaign Creation</a>
                     </li>
+
+                    <li class="nav-item">
+                        <a href="{% url 'create_reward' %}" class="nav-link">Reward Creation</a>
+                    </li>
+
                 {% endif %}
                 {% if user.is_authenticated %}
                 <li class="nav-item">

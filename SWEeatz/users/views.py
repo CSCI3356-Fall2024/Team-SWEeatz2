@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
-from .forms import StudentForm
-from .models import Student, Campaign, Reward, RewardExchange, Action, CompletedAction
+from .forms import StudentForm, RewardForm
+from .models import Student, Campaign, Reward, RewardExchange, Action, CompletedAction, Reward
 from django.shortcuts import get_object_or_404
 from django.utils import timezone 
 from django.utils.timezone import now
@@ -272,3 +272,83 @@ def campaign_data_view(request):
         'future_campaigns': future_campaigns
     }
     return render(request, 'campaign_data.html', context)
+
+
+def create_reward(request):
+    today = date.today()
+    if request.method == 'POST':
+        # Handle the form submission
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        points_required = request.POST.get('points_required', 0)
+        available_from = request.POST.get('available_from')
+        available_until = request.POST.get('available_until')
+
+        if title and description and points_required and available_from and available_until:
+            Reward.objects.create(
+                title=title,
+                description=description,
+                points_required=points_required,
+                available_from=available_from,
+                available_until=available_until,
+            )
+            return redirect('create_reward')
+
+    # Get the first 2 rewards and the total count
+    rewards = Reward.objects.filter(available_from__lte=today, available_until__gte=today)[:2]
+    total_rewards = Reward.objects.filter(available_from__lte=today, available_until__gte=today).count()
+    return render(request, 'reward_create.html', {'rewards': rewards, 'total_rewards': total_rewards})
+
+def load_more_rewards(request):
+    today = date.today()
+    offset = int(request.GET.get('offset', 2))
+
+    rewards = Reward.objects.filter(available_from__lte=today, available_until__gte=today)[offset:]
+    reward_data = [
+        {
+            "id": reward.id,
+            "title": reward.title,
+            "description": reward.description,
+            "points_required": reward.points_required,
+            "available_from": reward.available_from.strftime("%Y-%m-%d"),
+            "available_until": reward.available_until.strftime("%Y-%m-%d"),
+        }
+        for reward in rewards
+    ]
+    return JsonResponse({"rewards": reward_data})
+
+@csrf_exempt
+def update_reward(request, reward_id):
+    if request.method == 'POST':
+        try:
+            reward = Reward.objects.get(id=reward_id)
+
+            # Retrieve updated fields
+            title = request.POST.get('title', reward.title)
+            description = request.POST.get('description', reward.description)
+            points_required = request.POST.get('points_required', reward.points_required)
+            available_from = request.POST.get('available_from', reward.available_from)
+            available_until = request.POST.get('available_until', reward.available_until)
+
+            # Update fields
+            reward.title = title
+            reward.description = description
+            reward.points_required = points_required
+            reward.available_from = available_from
+            reward.available_until = available_until
+
+            reward.save()
+
+            return JsonResponse({"success": True})
+        except Reward.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Reward not found."})
+    return JsonResponse({"success": False, "error": "Invalid request method."})
+
+def delete_reward(request, reward_id):
+    if request.method == 'POST':
+        try:
+            reward = Reward.objects.get(id=reward_id)
+            reward.delete()
+            return JsonResponse({"success": True})
+        except Reward.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Reward not found."})

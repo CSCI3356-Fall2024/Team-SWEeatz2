@@ -21,6 +21,11 @@ urlpatterns = [
     path('rewards/', views.rewards_activity_view, name='rewards_activity'),
     path('actions/', views.action_page_view, name='actions'),
     path('campaign-data/', views.campaign_data_view, name='campaign_data'),
+    path('create-reward/', views.create_reward, name="create_reward"),
+    path('create-reward/load_more/', views.load_more_rewards, name='load_more_rewards'),
+    path('update_reward/<int:reward_id>/', views.update_reward, name="update_reward"),
+    path('delete_reward/<int:reward_id>/', views.delete_reward, name="delete_reward"),
+
 ]
 
 if settings.DEBUG:
