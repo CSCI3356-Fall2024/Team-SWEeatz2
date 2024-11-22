@@ -5,7 +5,7 @@
     <div class="row">
         <!-- Main Content -->
         <div class="col-md-10 main-content">
-            <!-- Points Balance - Centered Above Title -->
+            <!-- Points Balance -->
             <div class="d-flex justify-content-end mb-4">
                 <h4>Current Points Balance: <strong>{{ current_balance }}</strong></h4>
             </div>
@@ -61,6 +61,16 @@
                             <div class="col-10">
                                 <h5>{{ reward.title }} - <span class="text-primary">{{ reward.points_required }} Points</span></h5>
                                 <p>{{ reward.description }}</p>
+                            </div>
+                            <div class="col-2">
+                                <form method="POST" action="">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="reward_id" value="{{ reward.id }}">
+                                    <button type="submit" class="btn btn-success"
+                                        {% if current_balance < reward.points_required %}disabled{% endif %}>
+                                        Exchange
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     {% endfor %}

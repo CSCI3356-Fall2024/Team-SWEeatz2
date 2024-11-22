@@ -188,6 +188,30 @@ def rewards_activity_view(request):
     student = user.student  # Assuming there's a Student profile related to the user
     current_balance = student.points_balance
 
+    if request.method == "POST":
+        reward_id = request.POST.get("reward_id")
+        reward = Reward.objects.get(id=reward_id)
+
+        if student.points_balance >= reward.points_required and reward.is_active:
+            # Deduct points and create RewardExchange entry
+            student.points_balance -= reward.points_required
+            student.save()
+
+            RewardExchange.objects.create(
+                student=student,
+                reward=reward,
+                points_used=reward.points_required
+            )
+
+            messages.success(request, f"You have successfully redeemed {reward.title}!")
+            # Mark the reward as inactive
+            reward.is_active = False
+            reward.save()
+        else:
+            messages.error(request, "You do not have enough points or the reward is not available.")
+
+        return redirect("rewards_activity")  # Adjust the redirect as needed
+
     # Fetch completed campaigns
     completed_actions = CompletedAction.objects.filter(student=student)
 
@@ -196,6 +220,7 @@ def rewards_activity_view(request):
 
     # Fetch available rewards for redemption
     possible_rewards = Reward.objects.filter(
+        is_active=True,
         available_from__lte=timezone.now(),
         available_until__gte=timezone.now()
     )

@@ -103,6 +103,7 @@ class Reward(models.Model):
     points_required = models.PositiveIntegerField(help_text="Number of points required to redeem")
     available_from = models.DateField(help_text="Reward available from this date")
     available_until = models.DateField(help_text="Reward available until this date")
+    is_active = models.BooleanField(default=True, help_text="Set to False when the reward is no longer redeemable")
 
     def __str__(self):
         return f"{self.title} - {self.points_required} Points"
@@ -111,7 +112,7 @@ class Reward(models.Model):
         ordering = ['available_from']
 
 class RewardExchange(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='reward_exchanges')
+    student = models.ForeignKey('Student', on_delete=models.CASCADE, related_name='reward_exchanges')
     reward = models.ForeignKey(Reward, on_delete=models.CASCADE, related_name='exchanges')
     date_redeemed = models.DateField(auto_now_add=True)
     points_used = models.PositiveIntegerField()
