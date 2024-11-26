@@ -1,12 +1,16 @@
 {% extends "layout.html" %}
 {% load static %}
 
+{% block title %} Create Reward {% endblock %}
+
 {% block content %}
+<br><br><br>
+<h2 class="text-center m-0" style="color: #611800; padding-bottom: 20px;">Reward Creation Page (Admin Only)</h2>
 <div class="row">
     <!-- Left Column: List of Rewards -->
     <div class="col-md-4">
         <h3>Existing Rewards</h3>
-        <ul class="list-group">
+        <ul class="list-group" style="max-height: 500px; overflow-y: auto;">
             {% for reward in rewards %}
             <li class="list-group-item">
                 <!-- Edit button -->
@@ -27,6 +31,7 @@
             {% endfor %}
         </ul>
     </div>
+
 
     <!-- Right Column: New Reward Form -->
     <div class="col-md-8">

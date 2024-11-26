@@ -321,7 +321,7 @@ def create_reward(request):
             return redirect('create_reward')
 
     # Get the first 2 rewards and the total count
-    rewards = Reward.objects.filter(available_from__lte=today, available_until__gte=today)[:2]
+    rewards = Reward.objects.filter(available_from__lte=today, available_until__gte=today)
     total_rewards = Reward.objects.filter(available_from__lte=today, available_until__gte=today).count()
     return render(request, 'reward_create.html', {'rewards': rewards, 'total_rewards': total_rewards})
 
