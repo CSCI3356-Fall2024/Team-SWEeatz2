@@ -345,36 +345,26 @@ def load_more_rewards(request):
 
 @csrf_exempt
 def update_reward(request, reward_id):
+    reward = get_object_or_404(Reward, id=reward_id)
+
     if request.method == 'POST':
-        try:
-            reward = Reward.objects.get(id=reward_id)
+        # Handle form submission to update the reward
+        reward.title = request.POST.get('title')
+        reward.description = request.POST.get('description')
+        reward.points_required = request.POST.get('points_required')
+        reward.available_from = request.POST.get('available_from')
+        reward.available_until = request.POST.get('available_until')
+        reward.save()
+        return redirect('create_reward')  # Redirect to a page displaying all rewards, or wherever you'd like
 
-            # Retrieve updated fields
-            title = request.POST.get('title', reward.title)
-            description = request.POST.get('description', reward.description)
-            points_required = request.POST.get('points_required', reward.points_required)
-            available_from = request.POST.get('available_from', reward.available_from)
-            available_until = request.POST.get('available_until', reward.available_until)
-
-            # Update fields
-            reward.title = title
-            reward.description = description
-            reward.points_required = points_required
-            reward.available_from = available_from
-            reward.available_until = available_until
-
-            reward.save()
-
-            return JsonResponse({"success": True})
-        except Reward.DoesNotExist:
-            return JsonResponse({"success": False, "error": "Reward not found."})
-    return JsonResponse({"success": False, "error": "Invalid request method."})
+    return render(request, 'reward_create.html', {'reward_to_edit': reward})
 
 def delete_reward(request, reward_id):
     if request.method == 'POST':
         try:
             reward = Reward.objects.get(id=reward_id)
             reward.delete()
-            return JsonResponse({"success": True})
+
+            return redirect('create_reward')
         except Reward.DoesNotExist:
             return JsonResponse({"success": False, "error": "Reward not found."})

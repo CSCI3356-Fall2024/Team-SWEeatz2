@@ -1,39 +1,37 @@
 {% extends "layout.html" %}
 {% load static %}
 
-{% block title %} Create Reward {% endblock %}
-
 {% block content %}
-<br><br><br>
-<div class="d-flex justify-content-center align-items-center position-relative mb-4">
-    <h2 class="text-center m-0" style="color: #611800;">Reward Creation Page (Admin Only)</h2>
-</div>
-
 <div class="row">
-    <!-- Left Column: Existing Rewards -->
+    <!-- Left Column: List of Rewards -->
     <div class="col-md-4">
         <h3>Existing Rewards</h3>
-        <ul class="list-group" id="reward-list">
+        <ul class="list-group">
             {% for reward in rewards %}
-            <li class="list-group-item" data-reward-id="{{ reward.id }}" style="position: relative;">
-                <button class="btn btn-link three-dots-btn" data-toggle="modal" data-target="#editRewardModal" onclick="openEditModal({{ reward.id }}, '{{ reward.title }}', '{{ reward.description }}', {{ reward.points_required }}, '{{ reward.available_from|date:'Y-m-d' }}', '{{ reward.available_until|date:'Y-m-d' }}')">...</button>
+            <li class="list-group-item">
+                <!-- Edit button -->
+                <form method="get" action="{% url 'update_reward' reward.id %}" class="d-inline">
+                    <button type="submit" class="btn btn-link">Edit</button>
+                </form>
+                <!-- Delete button -->
+                <form method="post" action="{% url 'delete_reward' reward.id %}" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
                 <h5>{{ reward.title }}</h5>
-                <p>{{ reward.description|truncatewords:20 }}</p>
+                <p>{{ reward.description }}</p>
                 <p><strong>Points Required:</strong> {{ reward.points_required }}</p>
-                <small>Available From: {{ reward.available_from }}</small><br>
-                <small>Available Until: {{ reward.available_until }}</small>
+                <p><strong>Available From:</strong> {{ reward.available_from }}</p>
+                <p><strong>Available Until:</strong> {{ reward.available_until }}</p>
             </li>
             {% endfor %}
         </ul>
-
-        <button id="load-more" class="btn btn-primary mt-3" data-offset="2">Load More</button>
-        <button id="show-less" class="btn btn-primary mt-3" style="display: none;">Show Less</button>
     </div>
 
-    <!-- Right Column: Reward Creation Form -->
+    <!-- Right Column: New Reward Form -->
     <div class="col-md-8">
         <h3>Create a New Reward</h3>
-        <form method="post">
+        <form method="post" action="{% url 'create_reward' %}">
             {% csrf_token %}
             <div class="form-group">
                 <label for="title">Reward Title</label>
@@ -60,48 +58,44 @@
     </div>
 </div>
 
-<!-- Editing or Deleting Reward NOT CURRENTLY FULLY FUNCTIONAL-->
-<div class="modal fade" id="editRewardModal" tabindex="-1" aria-labelledby="editRewardModalLabel" aria-hidden="true">
+<!-- Modal for Editing Reward -->
+{% if reward_to_edit %}
+<div class="modal" id="editRewardModal" style="display: block;">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form id="editRewardForm">
+            <form method="post" action="{% url 'update_reward' reward_to_edit.id %}">
+                {% csrf_token %}
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editRewardModalLabel">Edit Reward</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title">Edit Reward</h5>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="edit-reward-id" name="reward_id">
                     <div class="form-group">
-                        <label for="edit-title">Title</label>
-                        <input type="text" class="form-control" id="edit-title" name="title" required>
+                        <label for="edit-title">Reward Title</label>
+                        <input type="text" class="form-control" id="edit-title" name="title" value="{{ reward_to_edit.title }}" required>
                     </div>
                     <div class="form-group">
                         <label for="edit-description">Description</label>
-                        <textarea class="form-control" id="edit-description" name="description" required></textarea>
+                        <textarea class="form-control" id="edit-description" name="description" rows="4" required>{{ reward_to_edit.description }}</textarea>
                     </div>
                     <div class="form-group">
                         <label for="edit-points-required">Points Required</label>
-                        <input type="number" class="form-control" id="edit-points-required" name="points_required" min="0" required>
+                        <input type="number" class="form-control" id="edit-points-required" name="points_required" min="0" value="{{ reward_to_edit.points_required }}" required>
                     </div>
                     <div class="form-group">
                         <label for="edit-available-from">Available From</label>
-                        <input type="date" class="form-control" id="edit-available-from" name="available_from" required>
+                        <input type="date" class="form-control" id="edit-available-from" name="available_from" value="{{ reward_to_edit.available_from|date:'Y-m-d' }}" required>
                     </div>
                     <div class="form-group">
                         <label for="edit-available-until">Available Until</label>
-                        <input type="date" class="form-control" id="edit-available-until" name="available_until" required>
+                        <input type="date" class="form-control" id="edit-available-until" name="available_until" value="{{ reward_to_edit.available_until|date:'Y-m-d' }}" required>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" onclick="deleteReward()">Delete</button>
-                    <button type="button" class="btn btn-primary" onclick="saveReward()">Save changes</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-
+{% endif %}
 {% endblock %}
