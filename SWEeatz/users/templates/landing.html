@@ -168,7 +168,7 @@
                     <div class="top-scorer">
                             <img src="{% if student.profile_picture %}{{ student.profile_picture.url }}{% else %}/media/profile_pics/Boston_College_Eagles_logo.svg.png{% endif %}">
                         <p>Rank: {{ forloop.counter }}<br><strong>{{ student.user.first_name }}</strong></p>
-                        <p>{{ student.points_balance }}</p>
+                        <p>{{ student.leaderboard_points }}</p>
                     </div>
                 {% endfor %}
             </div>
@@ -178,7 +178,7 @@
                 {% for student in other_top_students %}
                     <div class="user-item">
                         <span>{{ forloop.counter|add:3 }} {{ student.user.first_name }}</span>
-                        <span>{{ student.points_balance }}</span>
+                        <span>{{ student.leaderboard_points }}</span>
                     </div>
                 {% endfor %}
             </div>
@@ -187,7 +187,7 @@
             {% if user_not_in_top and current_student %}
                 <div class="user-item current-user">
                     <span>{{ current_student.user.first_name }}</span>
-                    <span>{{ current_student.points_balance }}</span>
+                    <span>{{ current_student.leaderboard_points }}</span>
                 </div>
             {% endif %}
         </div>

@@ -271,6 +271,8 @@ def action_page_view(request):
             )
 
             student.points_balance += campaign.points
+            student.leaderboard_points += campaign.points
+            
             student.completed_campaigns.append(campaign.title)
             if student.user.email not in campaign.completed_by:
                 campaign.completed_by.append(student.user.get_full_name())
