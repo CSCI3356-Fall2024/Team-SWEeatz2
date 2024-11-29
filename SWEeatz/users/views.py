@@ -22,8 +22,8 @@ def landing(request):
     #campaigns = Campaign.objects.all()
     campaigns = Campaign.objects.filter(start_date__lte=today, end_date__gte=today)
 
-    top_3_students = Student.objects.order_by('-points_balance')[:3]
-    other_top_students = Student.objects.order_by('-points_balance')[3:6]
+    top_3_students = Student.objects.order_by('-leaderboard_points')[:3]
+    other_top_students = Student.objects.order_by('-leaderboard_points')[3:6]
 
     current_user = request.user
     try:
@@ -272,7 +272,7 @@ def action_page_view(request):
 
             student.points_balance += campaign.points
             student.leaderboard_points += campaign.points
-            
+
             student.completed_campaigns.append(campaign.title)
             if student.user.email not in campaign.completed_by:
                 campaign.completed_by.append(student.user.get_full_name())
