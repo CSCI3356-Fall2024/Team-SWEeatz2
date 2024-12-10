@@ -11,27 +11,27 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+kye2e)3d1obciba*(u#1gq(o_6@k1qadu#wry_^k*n@h%u$6r'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-+kye2e)3d1obciba*(u#1gq(o_6@k1qadu#wry_^k*n@h%u$6r')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'False'
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 
 # Application definition
 
 # Uncomment whichever one works for you for now
-SITE_ID = 2
+SITE_ID = 3
 #SITE_ID = 3
 
 INSTALLED_APPS = [
@@ -43,11 +43,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
 
-    #student form app:
+    # Student form app
     'crispy_forms',
     'crispy_bootstrap5',
 
-    #Google sign-in apps:
+    # Google sign-in apps
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -63,12 +63,14 @@ SOCIALACCOUNT_PROVIDERS = {
         ],
         "AUTH_PARAMS": {
             'prompt': 'select_account',
-            "access_type": "online",}
+            "access_type": "online",
+        }
     }
 }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Added for static file handling
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -101,18 +103,17 @@ WSGI_APPLICATION = 'SWEeatz.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='postgresql://sweeatz_user:iV1vJLqwGQHGjnpmrA3ZMFhwuTQKTsfj@dpg-ctc89dl6l47c73fpdst0-a.ohio-postgres.render.com/sweeatz',
+        conn_max_age=600
+    )
 }
+
 
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -128,10 +129,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -140,18 +139,18 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-STATIC_URL = 'static/'
-
+# Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = (
@@ -164,10 +163,6 @@ LOGOUT_REDIRECT_URL = "/"
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
-
-
-STATIC_URL = '/static/'
-
 SOCIALACCOUNT_LOGIN_ON_GET = True
 ACCOUNT_LOGIN_ON_GET = True
 SOCIALACCOUNT_LOGOUT_ON_GET = True
@@ -176,4 +171,8 @@ ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'  # or 'https' in production
 SOCIALACCOUNT_ADAPTER = 'allauth.socialaccount.adapter.DefaultSocialAccountAdapter'
 SOCIALACCOUNT_AUTO_SIGNUP = True  # Skip the signup form
+
+# CSRF trusted origins
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost').split(',')
+
 
