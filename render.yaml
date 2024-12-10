@@ -11,7 +11,7 @@ runtime: python
 buildCommand: "./build.sh"
 startCommand: "gunicorn SWEeatz.wsgi"
 envVars:
-- key: DATABASE_URL
+- key: postgresql://sweeatz_user:iV1vJLqwGQHGjnpmrA3ZMFhwuTQKTsfj@dpg-ctc89dl6l47c73fpdst0-a.ohio-postgres.render.com/sweeatz
 fromDatabase:
 name: sweeatzdb
 property: connectionString
