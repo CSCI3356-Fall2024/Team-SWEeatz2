@@ -1,19 +1,18 @@
 databases:
-- name: sweeatzdb
-plan: free
-databaseName: sweeatz
-user: sweeatz_user
+  - name: sweeatzdb
+    plan: free
+    databaseName: sweeatz
+    user: sweeatz_user
+
 services:
-- type: web
-plan: free
-name: sweeatz
-runtime: python
-buildCommand: "./build.sh"
-startCommand: "gunicorn SWEeatz.wsgi"
-envVars:
-- key: postgresql://sweeatz_user:iV1vJLqwGQHGjnpmrA3ZMFhwuTQKTsfj@dpg-ctc89dl6l47c73fpdst0-a.ohio-postgres.render.com/sweeatz
-fromDatabase:
-name: sweeatzdb
-property: connectionString
-- key: postgresql://sweeatz_user:iV1vJLqwGQHGjnpmrA3ZMFhwuTQKTsfj@dpg-ctc89dl6l47c73fpdst0-a.ohio-postgres.render.com/sweeatz
-generateValue: true
+  - type: web
+    plan: free
+    name: sweeatz
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn SWEeatz.wsgi"
+    envVars:
+      - key: DATABASE_URL
+        value: postgresql://sweeatz_user:iV1vJLqwGQHGjnpmrA3ZMFhwuTQKTsfj@dpg-ctc89dl6l47c73fpdst0-a.ohio-postgres.render.com/sweeatz
+      - key: SECRET_KEY
+        generateValue: true
