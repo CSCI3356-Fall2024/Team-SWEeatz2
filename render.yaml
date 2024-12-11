@@ -10,7 +10,7 @@ services:
     name: sweeatz
     runtime: python
     buildCommand: "./build.sh"
-    startCommand: "cd SWEeatz/ && python3 -m gunicorn SWEeatz.asgi:application -k uvicorn.workers.UvicornWorker"
+    startCommand: "cd SWEeatz && python3 -m gunicorn SWEeatz.asgi -k uvicorn.workers.UvicornWorker"
     envVars:
       - key: DATABASE_URL
         value: postgresql://sweeatz_user:iV1vJLqwGQHGjnpmrA3ZMFhwuTQKTsfj@dpg-ctc89dl6l47c73fpdst0-a.ohio-postgres.render.com/sweeatz
