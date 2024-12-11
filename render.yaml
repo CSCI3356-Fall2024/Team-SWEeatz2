@@ -1,0 +1,20 @@
+databases:
+  - name: sweeatzdb
+    plan: free
+    databaseName: sweeatz
+    user: sweeatz_user
+
+services:
+  - type: web
+    plan: free
+    name: sweeatz
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "cd SWEeatz && python3 -m gunicorn SWEeatz.asgi -k uvicorn.workers.UvicornWorker"
+    envVars:
+      - key: DATABASE_URL
+        value: postgresql://sweeatz_user:iV1vJLqwGQHGjnpmrA3ZMFhwuTQKTsfj@dpg-ctc89dl6l47c73fpdst0-a.ohio-postgres.render.com/sweeatz
+      - key: SECRET_KEY
+        generateValue: true
+      -key: WEBCONCURRENCY
+      value: 4
